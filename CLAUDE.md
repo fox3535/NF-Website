@@ -10,6 +10,9 @@ Next.js 16.3.3 (App Router) · React 19.2.8 · TypeScript 5.9.3 · Tailwind CSS 
 
 Do not add significant dependencies without a clear reason. Prefer the existing stack when it can reasonably accomplish the task.
 
+## Local Setup
+Skills live under `.agents/skills/<name>` and are exposed to Claude Code via a symlink at `.claude/skills/<name>`. If `.claude/skills/<name>` ever appears as a text file instead of a folder (symlinks didn't survive checkout on this machine), run `scripts/relink-claude-skills.ps1`.
+
 ## Commands
 ```
 npm run dev
