@@ -1,1 +1,252 @@
 @import "tailwindcss";
+
+@theme {
+  /* Two page surfaces, per docs/visual-directions.md — nothing else counts
+     as a base surface. */
+  --color-paper: #faf6f0;
+  --color-paper-strong: #f0e7db;
+  --color-ink: #1b1224;
+  --color-ink-soft: #291b3a;
+
+  /* Structural brand purple. Flat fills only — never a gradient on a
+     control. */
+  --color-brand: #6d28d9;
+  --color-brand-strong: #59189f;
+  --color-brand-deep: #40107a;
+  --color-brand-soft: #d9cbfb;
+
+  /* NF logo pink. Identity accent — motifs, rules, oversized numerals on
+     brand surfaces. Never a text colour on paper at body size. */
+  --color-pink: #f5b8e8;
+  --color-pink-bright: #ffd4f4;
+
+  /* Status accent — free / confirmed / next. Always paired with a word. */
+  --color-gold: #7a4c00;
+  --color-gold-bright: #ffc94d;
+
+  /* Interactive accent — focus rings and interactive affordance only. */
+  --color-cyan: #0e93ab;
+  --color-cyan-bright: #5eead4;
+
+  --color-text: #241a33;
+  --color-text-secondary: #5c4e70;
+  --color-text-inverse: #faf6f0;
+  --color-text-inverse-secondary: #ddd5ef;
+
+  --color-border: rgb(36 26 51 / 12%);
+  --color-border-inverse: rgb(250 246 240 / 16%);
+
+  --font-sans: var(--font-archivo), "Archivo", ui-sans-serif, system-ui,
+    sans-serif;
+
+  --animate-fade-rise: fade-rise 0.5s ease-out;
+
+  @keyframes fade-rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@layer base {
+  html {
+    background-color: var(--color-paper);
+    color-scheme: light;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-text);
+    font-feature-settings: "tnum" 0;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Dual-tone focus ring. A single colour cannot clear 3:1 against all
+     three surfaces this page uses — paper, ink and brand purple (plain cyan
+     measures 1.96 on the purple and is effectively invisible there). The
+     bright inner ring carries the dark surfaces, the ink outer ring carries
+     the light ones, so the indicator is visible on every background. */
+  :focus-visible {
+    outline: 2px solid var(--color-cyan-bright);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--color-ink);
+    border-radius: 2px;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  /* ------------------------------------------------------------------
+     Display type. One family (Archivo), two widths. The condensed width
+     carries editorial personality at large sizes so the page has a voice
+     without adding a second typeface — and it deliberately contrasts with
+     the logo's rounded bubble script rather than competing with it.
+     ------------------------------------------------------------------ */
+  .nf-display {
+    font-stretch: 78%;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+  }
+
+  .nf-eyebrow {
+    font-stretch: 108%;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* Oversized editorial index numeral, e.g. the category list. */
+  .nf-numeral {
+    font-stretch: 70%;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  /* ------------------------------------------------------------------
+     NF action treatment. A flat brand fill with a hard printed offset —
+     the language of a sticker or a card back, not a SaaS gradient pill.
+     Pressing collapses the offset, so the control feels physically
+     pushed rather than merely scaled.
+     ------------------------------------------------------------------ */
+  .nf-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition-property: transform, box-shadow, background-color, color,
+      border-color;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .nf-action-filled {
+    background-color: var(--color-brand);
+    color: var(--color-text-inverse);
+    box-shadow: 3px 3px 0 var(--color-brand-deep);
+  }
+
+  .nf-action-filled:hover {
+    background-color: var(--color-brand-strong);
+  }
+
+  .nf-action-filled:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 var(--color-brand-deep);
+  }
+
+  /* On ink and brand surfaces the offset reads as gold rather than a
+     darker purple, which would disappear into the background. */
+  .nf-action-gold {
+    background-color: var(--color-gold-bright);
+    color: var(--color-ink);
+    box-shadow: 3px 3px 0 var(--color-brand-deep);
+  }
+
+  .nf-action-gold:hover {
+    background-color: var(--color-pink-bright);
+  }
+
+  .nf-action-gold:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 var(--color-brand-deep);
+  }
+
+  .nf-action-outline {
+    border: 1.5px solid currentColor;
+    background-color: transparent;
+  }
+
+  .nf-action-outline:active {
+    transform: translateY(1px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nf-action-filled:active,
+    .nf-action-gold:active,
+    .nf-action-outline:active {
+      transform: none;
+    }
+  }
+
+  /* ------------------------------------------------------------------
+     Collectible framing. A double edge with an inset image, borrowed from
+     the way a graded card sits inside a slab. Restrained: a frame, not a
+     illustrated trading card.
+     ------------------------------------------------------------------ */
+  .nf-slab {
+    padding: 8px;
+    border-radius: 16px;
+    background-color: var(--color-paper);
+    box-shadow:
+      0 0 0 1px rgb(36 26 51 / 12%),
+      6px 6px 0 var(--color-brand-deep);
+  }
+
+  .nf-slab-ink {
+    background-color: var(--color-ink-soft);
+    box-shadow:
+      0 0 0 1px rgb(250 246 240 / 16%),
+      6px 6px 0 var(--color-brand-deep);
+  }
+
+  /* ------------------------------------------------------------------
+     Print texture. A faint halftone dot field, used only on large brand
+     surfaces to stop a flat purple field reading as dead space.
+     ------------------------------------------------------------------ */
+  .nf-halftone::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(
+      var(--color-pink) 1px,
+      transparent 1px
+    );
+    background-size: 14px 14px;
+    opacity: 0.14;
+  }
+
+  /* Perforated rule — the tear line on a ticket stub. Used as a section
+     transition, sparingly. */
+  .nf-perforation {
+    height: 1px;
+    background-image: repeating-linear-gradient(
+      to right,
+      currentColor 0 6px,
+      transparent 6px 12px
+    );
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
