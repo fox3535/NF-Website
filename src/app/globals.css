@@ -8,12 +8,14 @@
   --color-ink: #1b1224;
   --color-ink-soft: #291b3a;
 
-  /* Structural brand purple. Flat fills only — never a gradient on a
-     control. */
-  --color-brand: #6d28d9;
-  --color-brand-strong: #59189f;
-  --color-brand-deep: #40107a;
-  --color-brand-soft: #d9cbfb;
+  /* Canonical NF purple. Flat fills only — never a gradient on a control.
+     At this lightness it carries white text (5.13) but not secondary body
+     text (3.91), so large text-bearing surfaces use brand-deep instead and
+     keep --color-brand for fills, accents and display type. */
+  --color-brand: #832eff;
+  --color-brand-strong: #6a1fd6;
+  --color-brand-deep: #35096f;
+  --color-brand-soft: #ded0ff;
 
   /* NF logo pink. Identity accent — motifs, rules, oversized numerals on
      brand surfaces. Never a text colour on paper at body size. */
@@ -23,6 +25,10 @@
   /* Status accent — free / confirmed / next. Always paired with a word. */
   --color-gold: #7a4c00;
   --color-gold-bright: #ffc94d;
+
+  /* Seasonal accent for the Halloween show. 7.73 on ink. */
+  --color-halloween: #ff8a3d;
+  --color-halloween-deep: #7a2f00;
 
   /* Interactive accent — focus rings and interactive affordance only. */
   --color-cyan: #0e93ab;
@@ -227,6 +233,39 @@
     opacity: 0.14;
   }
 
+  /* Faint collectible grid — the ruled lines of a binder page. Sits under
+     the campaign wall so the area reads as an NF surface rather than a void.
+     Deliberately low contrast: it must never compete with the banners. */
+  .nf-grid::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 5%) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 5%) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 80%);
+  }
+
+  /* Quick fade for copy that swaps in place (e.g. the category description
+     in What Is NF) — deliberately shorter than --animate-fade-rise, which is
+     tuned for a once-per-section scroll reveal, not a repeated hover beat. */
+  .nf-copy-swap {
+    animation: nf-copy-swap 180ms ease-out;
+  }
+
+  @keyframes nf-copy-swap {
+    from {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   /* Perforated rule — the tear line on a ticket stub. Used as a section
      transition, sparingly. */
   .nf-perforation {
@@ -237,6 +276,130 @@
       transparent 6px 12px
     );
     opacity: 0.35;
+  }
+
+  /* ------------------------------------------------------------------
+     SIGNATURE 1 — Graded slab.
+     A collectible sealed in an acrylic case: outer shell, a label strip
+     across the top carrying provenance, then the item itself. This is the
+     page's main framing device for media.
+     ------------------------------------------------------------------ */
+  .nf-case {
+    position: relative;
+    border-radius: 18px;
+    padding: 10px;
+    background: linear-gradient(
+      160deg,
+      var(--color-paper) 0%,
+      var(--color-paper-strong) 100%
+    );
+    box-shadow:
+      0 0 0 1px rgb(36 26 51 / 18%),
+      8px 8px 0 var(--color-brand-deep);
+  }
+
+  .nf-case-ink {
+    background: linear-gradient(
+      160deg,
+      var(--color-ink-soft) 0%,
+      var(--color-ink) 100%
+    );
+    box-shadow:
+      0 0 0 1px rgb(250 246 240 / 18%),
+      8px 8px 0 var(--color-brand-deep);
+  }
+
+  /* The printed label across the top of a slab. */
+  .nf-case-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 4px 8px;
+    font-stretch: 108%;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* ------------------------------------------------------------------
+     SIGNATURE 2 — Foil sweep.
+     A single diagonal sheen, the way light catches a holo card. Static by
+     default; it only travels on deliberate hover, and never under
+     reduced motion.
+     ------------------------------------------------------------------ */
+  .nf-foil {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .nf-foil::after {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    pointer-events: none;
+    z-index: 1;
+    background: linear-gradient(
+      104deg,
+      transparent 38%,
+      rgb(255 255 255 / 22%) 46%,
+      rgb(245 184 232 / 30%) 50%,
+      rgb(94 234 212 / 22%) 54%,
+      transparent 62%
+    );
+    transform: translateX(-38%);
+    transition: transform 900ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .nf-foil:hover::after,
+    .nf-foil:focus-within::after {
+      transform: translateX(38%);
+    }
+  }
+
+  /* ------------------------------------------------------------------
+     SIGNATURE 3 — Stamp.
+     A rubber-stamped provenance / status mark. Slight rotation only here,
+     where the reference is literal and no factual text is inside it.
+     ------------------------------------------------------------------ */
+  .nf-stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 2px solid currentColor;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-stretch: 108%;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transform: rotate(-2deg);
+  }
+
+  /* ------------------------------------------------------------------
+     SIGNATURE 4 — Notched edge.
+     The punched edge of a ticket, used where two sections meet.
+     ------------------------------------------------------------------ */
+  .nf-notch {
+    position: relative;
+    height: 18px;
+  }
+
+  .nf-notch::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      circle at 9px 0,
+      var(--nf-notch-color, var(--color-paper)) 9px,
+      transparent 9.5px
+    );
+    background-size: 30px 18px;
+    background-repeat: repeat-x;
   }
 }
 

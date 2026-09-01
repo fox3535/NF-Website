@@ -9,6 +9,14 @@ export default function FinalCta() {
       aria-labelledby="final-cta-heading"
       className="nf-halftone relative overflow-hidden bg-ink py-20 md:py-28"
     >
+      {/* Ticket tear where the page closes onto the final action. Colour
+          matches Upcoming Events' background directly above it so the
+          perforation actually reads as a tear between the two surfaces. */}
+      <div
+        aria-hidden="true"
+        className="nf-notch absolute inset-x-0 top-0"
+        style={{ ["--nf-notch-color" as string]: "var(--color-brand-soft)" }}
+      />
       <RevealOnScroll className="relative mx-auto max-w-3xl px-4 text-center text-text-inverse md:px-6">
         <span
           aria-hidden="true"

@@ -3,11 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { getTicketHref, expo2026 } from "@/lib/events";
-
-const NAV_LINKS = [
-  { href: "/#upcoming-events", label: "Events" },
-  { href: "/#category-band", label: "About" },
-];
+import { NAV_LINKS, TICKET_CTA } from "@/lib/nav";
 
 /**
  * Mobile menu trigger + full-screen panel. Sets `inert` on the rest of the
@@ -138,7 +134,7 @@ export default function MobileNav() {
               onClick={() => setOpen(false)}
               className="mt-4 inline-flex items-center justify-center rounded-lg bg-brand px-6 py-4 text-lg font-semibold text-text-inverse"
             >
-              {expo2026.ctaLabel}
+              {TICKET_CTA}
             </Link>
           </nav>
         </div>
