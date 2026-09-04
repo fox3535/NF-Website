@@ -61,7 +61,7 @@ export const EXPO_2026_ICS: IcsEventInput = {
   uid: "nf-expo-2026@nostalgiafest.ca",
   title: "Nostalgia Fest Expo",
   description:
-    "Nostalgia Fest Expo — trading cards, toys, comics, artists and collectibles. Free general admission. Fri 4-8 PM, Sat 11 AM-8 PM, Sun 11 AM-6 PM.",
+    "Nostalgia Fest Expo: trading cards, toys, comics, artists and collectibles. Free general admission. Fri 4-8 PM, Sat 11 AM-8 PM, Sun 11 AM-6 PM.",
   location: "Square One Event Hall, 199 Rathburn Rd W, Mississauga, Ontario",
   startIso: "2026-10-09T16:00:00-04:00",
   endIso: "2026-10-11T18:00:00-04:00",

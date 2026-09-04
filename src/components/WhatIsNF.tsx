@@ -81,7 +81,7 @@ const CATEGORIES: Category[] = [
     photo: 4,
     stamp: "The whole floor",
     description:
-      "The whole floor leans into the shows, games and toys that shaped growing up — the feeling behind every table, not just one.",
+      "The whole floor leans into the shows, games and toys that shaped growing up. It's the feeling behind every table, not just one.",
   },
 ];
 

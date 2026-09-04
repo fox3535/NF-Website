@@ -34,7 +34,7 @@ export default function ExpoPlanYourVisit() {
         <div className="nf-case mt-10">
           <div className="nf-case-label text-text-secondary">
             <span>{expo2026.venue}</span>
-            <span className="text-brand">Oct 9–11, 2026</span>
+            <span className="text-brand">Oct 9 to 11, 2026</span>
           </div>
 
           <div className="grid rounded-lg bg-white md:grid-cols-[3fr_2fr]">

@@ -63,7 +63,7 @@ export default function TicketCtaCluster({
   async function handleShare() {
     const shareData = {
       title: "Nostalgia Fest Expo",
-      text: "I'm going to Nostalgia Fest Expo — free admission, Oct 9–11, 2026 at Square One Event Hall.",
+      text: "I'm going to Nostalgia Fest Expo: free admission, Oct 9 to 11, 2026 at Square One Event Hall.",
       url: typeof window !== "undefined" ? window.location.href : "",
     };
     try {

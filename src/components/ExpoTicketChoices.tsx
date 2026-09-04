@@ -55,7 +55,7 @@ export default function ExpoTicketChoices() {
         </h2>
         <p className="mt-3 max-w-prose text-text-secondary">
           General Admission is free and is how most people attend. VIP is a
-          paid upgrade for anyone who wants more — it&apos;s never required.
+          paid upgrade for anyone who wants more. It&apos;s never required.
         </p>
 
         <div className="mt-10 grid gap-6 md:grid-cols-[3fr_2fr] md:items-stretch">

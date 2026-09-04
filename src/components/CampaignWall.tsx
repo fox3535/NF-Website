@@ -46,7 +46,7 @@ function CampaignCard({
     <Link
       href={campaign.href}
       id={id}
-      aria-label={`${campaign.headline} — ${campaign.ctaLabel}`}
+      aria-label={`${campaign.headline}: ${campaign.ctaLabel}`}
       className={
         "group relative block overflow-hidden rounded-xl bg-brand-deep outline outline-white/10 transition-[outline-color,translate] duration-200 ease-out group-hover:outline-gold-bright/60 hover:outline-gold-bright/60 md:hover:-translate-y-1 " +
         className

@@ -26,7 +26,7 @@ export const EXPO_TICKET_TIERS: TicketTier[] = [
     name: "General Admission",
     priceLabel: "Free",
     description:
-      "The standard way to attend Nostalgia Fest Expo — no cost, no catch.",
+      "The standard way to attend Nostalgia Fest Expo, no cost, no catch.",
   },
   {
     id: "vip",

@@ -23,10 +23,10 @@ export default function SiteFooter() {
           <Link href="/#upcoming-events" className="inline-flex min-h-[24px] w-fit items-center hover:text-text-inverse">
             Events
           </Link>
-          <Link href="/#category-band" className="inline-flex min-h-[24px] w-fit items-center hover:text-text-inverse">
+          <Link href="/#what-is-nf" className="inline-flex min-h-[24px] w-fit items-center hover:text-text-inverse">
             About
           </Link>
-          <Link href="/#plan-your-visit" className="inline-flex min-h-[24px] w-fit items-center hover:text-text-inverse">
+          <Link href="/events/expo-2026#plan-your-visit" className="inline-flex min-h-[24px] w-fit items-center hover:text-text-inverse">
             Plan your visit
           </Link>
         </nav>

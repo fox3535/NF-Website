@@ -14,9 +14,9 @@ const archivo = Archivo({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://nostalgiafest.ca"),
-  title: "Nostalgia Fest — Trading Cards, Collectibles & Pop Culture",
+  title: "Nostalgia Fest: Trading Cards, Collectibles & Pop Culture",
   description:
-    "Nostalgia Fest is a GTA event for trading cards, collectibles, toys, artists and pop culture. Free general admission at the next Nostalgia Fest Expo, October 9–11, 2026.",
+    "Nostalgia Fest is a GTA event for trading cards, collectibles, toys, artists and pop culture. Free general admission at the next Nostalgia Fest Expo, October 9 to 11, 2026.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -21,6 +21,9 @@ export default function Home() {
     <>
       <SiteHeader />
       <main id="main-content" className="pb-24 md:pb-0">
+        <h1 className="sr-only">
+          Nostalgia Fest: trading cards, collectibles and pop culture events
+        </h1>
         <CampaignWall />
         <ReelsCarousel />
         <WhatIsNF />

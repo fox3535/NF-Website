@@ -42,7 +42,7 @@ export default function ExpoWhyAttend() {
               200+
             </p>
             <p className="mt-1 text-sm text-paper/85">
-              vendor tables at Expo 2026 — browse, buy, sell and trade
+              vendor tables at Expo 2026: browse, buy, sell and trade
             </p>
 
             <ol className="mt-8 divide-y divide-white/15 border-t border-white/15">
@@ -78,7 +78,7 @@ export default function ExpoWhyAttend() {
               className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink/90 to-transparent"
             />
             <p className="absolute right-4 bottom-4 left-4 text-sm font-medium text-text-inverse">
-              Previous Nostalgia Fest event — April 2026
+              Previous Nostalgia Fest event · April 2026
             </p>
           </div>
         </div>

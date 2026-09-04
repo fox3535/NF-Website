@@ -37,7 +37,7 @@ export const EXPO_ANNOUNCEMENTS: Announcement[] = [
     id: "guest",
     kind: "Special guest",
     title: "A special guest is confirmed",
-    description: "Who it is hasn't been announced yet — check back soon.",
+    description: "Who it is hasn't been announced yet. Check back soon.",
     pending: true,
   },
 ];
@@ -88,7 +88,7 @@ export const EXPO_FAQ: FaqItem[] = [
   },
   {
     question: "What are the hours?",
-    answer: "Friday 4–8 PM, Saturday 11 AM–8 PM, Sunday 11 AM–6 PM.",
+    answer: "Friday 4 to 8 PM, Saturday 11 AM to 8 PM, Sunday 11 AM to 6 PM.",
   },
   {
     question: "Where is the event?",
@@ -101,6 +101,6 @@ export const EXPO_FAQ: FaqItem[] = [
   {
     question: "Can I attend multiple days?",
     answer:
-      "General Admission is free, and the show runs all three days — Friday, Saturday and Sunday — so you're welcome any day it's open.",
+      "General Admission is free, and the show runs all three days (Friday, Saturday and Sunday), so you're welcome any day it's open.",
   },
 ];

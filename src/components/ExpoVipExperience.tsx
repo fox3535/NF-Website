@@ -82,7 +82,7 @@ export default function ExpoVipExperience() {
           />
 
           <p className="mt-6 text-text-inverse-secondary md:text-lg">
-            General Admission is free and gets you the full floor — every
+            General Admission is free and gets you the full floor: every
             vendor table, every artist, all three days. Nothing on this page
             is behind VIP.
           </p>
@@ -99,9 +99,9 @@ export default function ExpoVipExperience() {
                 />
                 <p className="text-sm text-text-inverse-secondary">
                   <span className="font-semibold text-text-inverse">
-                    {term}
+                    {term}:
                   </span>{" "}
-                  — {detail}
+                  {detail}
                 </p>
               </li>
             ))}

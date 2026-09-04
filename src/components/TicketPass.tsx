@@ -81,7 +81,7 @@ export default function TicketPass({
             {price}
           </p>
           <p className={`nf-eyebrow text-[10px] ${textSecondary}`}>
-            Expo 2026 · Oct 9–11
+            Expo 2026 · Oct 9 to 11
           </p>
         </div>
         <p className={`text-base ${textPrimary}`}>{description}</p>

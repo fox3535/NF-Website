@@ -5,9 +5,9 @@ import SiteHeader from "@/components/SiteHeader";
 import { halloween2026 } from "@/lib/events";
 
 export const metadata: Metadata = {
-  title: "Nostalgia Fest Halloween — October 31 – November 1, 2026",
+  title: "Nostalgia Fest Halloween: October 31 to November 1, 2026",
   description:
-    "Nostalgia Fest Halloween details are coming soon. Free general admission, October 31 – November 1, 2026 at Square One Event Hall.",
+    "Nostalgia Fest Halloween details are coming soon. Free general admission, October 31 to November 1, 2026 at Square One Event Hall.",
 };
 
 /**

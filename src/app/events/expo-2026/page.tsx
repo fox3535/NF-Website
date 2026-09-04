@@ -14,13 +14,13 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
-  title: "Nostalgia Fest Expo 2026 — October 9–11 — Free Admission",
+  title: "Nostalgia Fest Expo 2026: October 9 to 11, Free Admission",
   description:
-    "Nostalgia Fest Expo, October 9–11, 2026 at Square One Event Hall, Mississauga. 200+ vendor tables of trading cards, toys, comics, art and collectibles. Free General Admission, VIP upgrade available.",
+    "Nostalgia Fest Expo, October 9 to 11, 2026 at Square One Event Hall, Mississauga. 200+ vendor tables of trading cards, toys, comics, art and collectibles. Free General Admission, VIP upgrade available.",
   openGraph: {
     title: "Nostalgia Fest Expo 2026",
     description:
-      "October 9–11, 2026 · Square One Event Hall, Mississauga. Free General Admission.",
+      "October 9 to 11, 2026 · Square One Event Hall, Mississauga. Free General Admission.",
     images: ["/images/campaigns/expo-2026-banner.png"],
   },
 };

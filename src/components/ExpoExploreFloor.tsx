@@ -29,8 +29,8 @@ export default function ExpoExploreFloor() {
             <p className="relative mt-4 text-sm text-paper/85 md:text-base">
               Browse, buy, sell and trade with vendors who know their stuff.
               Meet artists working the room in person. Find toys, figures,
-              comics and collectibles alongside the trading-card tables —
-              this is an Expo-specific scale, not a claim about every
+              comics and collectibles alongside the trading-card tables.
+              This is an Expo-specific scale, not a claim about every
               Nostalgia Fest show.
             </p>
           </div>
