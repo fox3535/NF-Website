@@ -30,7 +30,10 @@ export default function ExpoFinalCta() {
           <p className="text-sm text-paper/85">VIP upgrade available</p>
         </div>
         <div className="mt-8 flex justify-center">
-          <TicketButton className="nf-action nf-action-gold px-7 py-3.5 text-base">
+          <TicketButton
+            eventSlug="expo-2026"
+            className="nf-action nf-action-gold px-7 py-3.5 text-base"
+          >
             Get your tickets
             <span aria-hidden="true">→</span>
           </TicketButton>

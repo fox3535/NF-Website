@@ -1,26 +1,31 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { EXPO_TICKET_URL } from "@/lib/tickets";
+import { TICKET_URLS } from "@/lib/tickets";
 
 /**
- * The Expo page's one ticket-destination component. Reads the centralized
- * EXPO_TICKET_URL (src/lib/tickets.ts) so every "Get your tickets" action
- * updates from one place once a real provider URL exists. Until then it
- * falls back to an honest in-page destination instead of a fake link.
+ * The one ticket-destination component every event page uses. Reads the
+ * centralized TICKET_URLS map (src/lib/tickets.ts) by event slug, so every
+ * "Get your tickets" action updates from one place once a real provider URL
+ * exists for that event. Until then it falls back to an honest in-page
+ * destination instead of a fake link.
  */
 export default function TicketButton({
+  eventSlug,
   className,
   children,
   fallback = "#tickets",
 }: {
+  eventSlug: string;
   className: string;
   children: ReactNode;
   fallback?: string;
 }) {
-  if (EXPO_TICKET_URL) {
+  const url = TICKET_URLS[eventSlug] ?? null;
+
+  if (url) {
     return (
       <a
-        href={EXPO_TICKET_URL}
+        href={url}
         target="_blank"
         rel="noopener noreferrer"
         className={className}

@@ -1,6 +1,6 @@
 import RevealOnScroll from "./RevealOnScroll";
 import TicketPass from "./TicketPass";
-import { EXPO_TICKET_TIERS, EXPO_TICKET_URL } from "@/lib/tickets";
+import { EXPO_TICKET_TIERS, TICKET_URLS } from "@/lib/tickets";
 
 /**
  * Ticket choices — deliberately placed right after the hero. Shaped like
@@ -15,10 +15,10 @@ export default function ExpoTicketChoices() {
   if (!general || !vip) return null;
 
   function actionFor(tone: "paper" | "ink") {
-    if (EXPO_TICKET_URL) {
+    if (TICKET_URLS["expo-2026"]) {
       return (
         <a
-          href={EXPO_TICKET_URL}
+          href={TICKET_URLS["expo-2026"]}
           target="_blank"
           rel="noopener noreferrer"
           className={
@@ -64,6 +64,7 @@ export default function ExpoTicketChoices() {
             kindLabel="Standard entry"
             price={general.priceLabel}
             priceTone="text-brand"
+            metaLabel="Expo 2026 · Oct 9 to 11"
             description={general.description}
             action={actionFor("paper")}
             tone="paper"
@@ -73,6 +74,7 @@ export default function ExpoTicketChoices() {
             kindLabel="Optional upgrade"
             price="VIP"
             priceTone="text-gold-bright"
+            metaLabel="Expo 2026 · Oct 9 to 11"
             description={`${vip.priceLabel}. ${vip.description}`}
             action={actionFor("ink")}
             tone="ink"

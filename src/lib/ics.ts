@@ -66,3 +66,16 @@ export const EXPO_2026_ICS: IcsEventInput = {
   startIso: "2026-10-09T16:00:00-04:00",
   endIso: "2026-10-11T18:00:00-04:00",
 };
+
+// No hours are confirmed yet for Halloween (docs/event-data.md), so this
+// spans the two full confirmed dates without asserting any specific open or
+// close time, the same honesty rule as everywhere else on the page.
+export const HALLOWEEN_2026_ICS: IcsEventInput = {
+  uid: "nf-halloween-2026@nostalgiafest.ca",
+  title: "Nostalgia Fest Halloween",
+  description:
+    "Nostalgia Fest Halloween: costumes, collectibles and a major cosplay competition. Free general admission.",
+  location: "Square One Event Hall",
+  startIso: "2026-10-31T00:00:00-04:00",
+  endIso: "2026-11-02T00:00:00-04:00",
+};

@@ -53,7 +53,10 @@ export default function ExpoHero() {
           </div>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <TicketButton className="nf-action nf-action-gold px-7 py-3.5 text-base">
+            <TicketButton
+              eventSlug="expo-2026"
+              className="nf-action nf-action-gold px-7 py-3.5 text-base"
+            >
               Get your tickets
               <span aria-hidden="true">→</span>
             </TicketButton>

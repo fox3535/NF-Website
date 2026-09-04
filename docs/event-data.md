@@ -28,6 +28,13 @@ This is the authoritative file for public Nostalgia Fest event information. Neve
 - **Dates:** October 31 and November 1, 2026
 - **Venue:** Square One Event Hall
 - **General admission:** FREE
+- **Cosplay competition:** a major cosplay competition is confirmed as part
+  of the event. Prize amounts, judging rules, categories and schedule are
+  not yet finalized, do not publish specific claims about any of those
+  until they are added here.
+- **Hours:** not yet confirmed, do not publish or invent hours.
+- **VIP:** no VIP tier is confirmed for this event, do not add one.
+- **Sponsors / activations:** none confirmed yet.
 
 ## Unconfirmed
 Guests, attractions, programming, sponsors and other changing details require confirmation before publication. This applies to anything not explicitly listed above — e.g. the special guest's identity, specific sponsor activation content, and VIP pricing/perks remain unconfirmed even though the surrounding facts now are.

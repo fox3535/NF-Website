@@ -1,25 +1,28 @@
-// Ticket-provider-agnostic destination config for the Expo 2026 page.
+// Ticket-provider-agnostic destination config, keyed by event slug.
 //
 // This is the ONE place a real ticketing URL (Eventbrite or otherwise) gets
-// wired in. Every "Get your tickets" action on the Expo page reads from
-// here rather than hard-coding a provider URL — swapping providers later is
-// a one-line change, not a hunt through components.
+// wired in, per event. Every "Get your tickets" action across every event
+// page reads from here via TicketButton rather than hard-coding a provider
+// URL anywhere else, so wiring a real link later (or switching providers)
+// is a one-line change here, never a hunt through page components.
 //
-// No real ticketing URL is documented yet, so this stays null. Consumers
-// (see TicketButton.tsx) fall back to the in-page ticket-choice section
-// instead of inventing an external destination.
-export const EXPO_TICKET_URL: string | null = null;
+// No real ticketing URL is documented for any event yet, so every entry
+// stays null. Consumers (see TicketButton.tsx) fall back to an honest
+// in-page destination instead of inventing one.
+export const TICKET_URLS: Record<string, string | null> = {
+  "expo-2026": null,
+  "halloween-2026": null,
+};
 
 export interface TicketTier {
   id: "general" | "vip";
   name: string;
   priceLabel: string;
   description: string;
-  /** Per-tier override — falls back to EXPO_TICKET_URL when unset, which
-   *  covers the common case of one checkout page selling both tiers. */
-  url?: string | null;
 }
 
+// Expo-specific: Expo is the only confirmed event with a paid VIP tier
+// (docs/event-data.md). Halloween has no VIP data, so it has no tier list.
 export const EXPO_TICKET_TIERS: TicketTier[] = [
   {
     id: "general",

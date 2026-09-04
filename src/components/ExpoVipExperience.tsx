@@ -1,7 +1,7 @@
 import RevealOnScroll from "./RevealOnScroll";
 import TicketButton from "./TicketButton";
 import TicketPass from "./TicketPass";
-import { EXPO_TICKET_TIERS, EXPO_TICKET_URL } from "@/lib/tickets";
+import { EXPO_TICKET_TIERS, TICKET_URLS } from "@/lib/tickets";
 
 /**
  * VIP Experience — an optional upgrade, presented as a premium object.
@@ -48,13 +48,17 @@ export default function ExpoVipExperience() {
             kindLabel="Optional upgrade"
             price="VIP"
             priceTone="text-gold-bright"
+            metaLabel="Expo 2026 · Oct 9 to 11"
             description="Pricing and perks are still being finalized."
             tone="ink"
             sectionBg="bg-ink"
             foil
             action={
-              EXPO_TICKET_URL ? (
-                <TicketButton className="nf-action nf-action-gold px-6 py-3 text-sm">
+              TICKET_URLS["expo-2026"] ? (
+                <TicketButton
+                  eventSlug="expo-2026"
+                  className="nf-action nf-action-gold px-6 py-3 text-sm"
+                >
                   Get your tickets
                   <span aria-hidden="true">→</span>
                 </TicketButton>

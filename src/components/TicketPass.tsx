@@ -12,6 +12,8 @@ export default function TicketPass({
   kindLabel,
   price,
   priceTone,
+  /** Small tabular line beside the price, e.g. "Expo 2026 · Oct 9 to 11". */
+  metaLabel,
   description,
   action,
   tone,
@@ -19,6 +21,9 @@ export default function TicketPass({
   /** Background class matching the section this pass sits on — the notch
    *  "cutouts" are punched to this colour, not the pass's own surface. */
   sectionBg = "bg-paper",
+  /** Override the panel colour — defaults to NF purple. Pass an event's own
+   *  accent (e.g. Halloween orange) so the pass doesn't read as Expo. */
+  surfaceClass,
   className = "",
 }: {
   eyebrow: string;
@@ -26,14 +31,17 @@ export default function TicketPass({
   price: string;
   /** Text colour class for the price numeral. */
   priceTone: string;
+  metaLabel: string;
   description: string;
   action: ReactNode;
   tone: "paper" | "ink";
   foil?: boolean;
   sectionBg?: string;
+  surfaceClass?: string;
   className?: string;
 }) {
-  const surface = tone === "paper" ? "bg-brand-soft" : "bg-brand-deep";
+  const surface =
+    surfaceClass ?? (tone === "paper" ? "bg-brand-soft" : "bg-brand-deep");
   const textPrimary = tone === "paper" ? "text-text" : "text-text-inverse";
   const textSecondary =
     tone === "paper" ? "text-text-secondary" : "text-text-inverse-secondary";
@@ -81,7 +89,7 @@ export default function TicketPass({
             {price}
           </p>
           <p className={`nf-eyebrow text-[10px] ${textSecondary}`}>
-            Expo 2026 · Oct 9 to 11
+            {metaLabel}
           </p>
         </div>
         <p className={`text-base ${textPrimary}`}>{description}</p>

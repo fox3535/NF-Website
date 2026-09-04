@@ -43,6 +43,12 @@ export default function RevealOnScroll({
     const reveal = () => {
       node.style.opacity = "1";
       node.style.transform = "translateY(0)";
+      // Lets descendants opt into a scroll-triggered entrance via the
+      // .nf-on-reveal-stamp class in globals.css. That selector only matches
+      // once this is set, so an element's static styles are what renders
+      // when the animation never runs (reduced motion, no JS, this effect
+      // bailing out above) — motion is never the only carrier of meaning.
+      node.dataset.revealed = "true";
       observer.disconnect();
       window.clearTimeout(fallbackTimer);
     };

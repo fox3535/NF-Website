@@ -1,6 +1,7 @@
 import AddToCalendarButton from "./AddToCalendarButton";
 import RevealOnScroll from "./RevealOnScroll";
 import { expo2026 } from "@/lib/events";
+import { EXPO_2026_ICS } from "@/lib/ics";
 
 const MAPS_URL =
   "https://www.google.com/maps/search/?api=1&query=" +
@@ -78,7 +79,11 @@ export default function ExpoPlanYourVisit() {
                 >
                   Get directions
                 </a>
-                <AddToCalendarButton className={filledButton} />
+                <AddToCalendarButton
+                  event={EXPO_2026_ICS}
+                  filename="nostalgia-fest-expo-2026.ics"
+                  className={filledButton}
+                />
               </div>
             </div>
           </div>

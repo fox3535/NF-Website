@@ -1,18 +1,20 @@
 "use client";
 
-import { buildIcs, downloadIcs, EXPO_2026_ICS } from "@/lib/ics";
+import { buildIcs, downloadIcs, type IcsEventInput } from "@/lib/ics";
 
 export default function AddToCalendarButton({
+  event,
+  filename,
   className,
 }: {
+  event: IcsEventInput;
+  filename: string;
   className: string;
 }) {
   return (
     <button
       type="button"
-      onClick={() =>
-        downloadIcs("nostalgia-fest-expo-2026.ics", buildIcs(EXPO_2026_ICS))
-      }
+      onClick={() => downloadIcs(filename, buildIcs(event))}
       className={className}
     >
       Add to calendar

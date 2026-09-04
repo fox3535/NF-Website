@@ -178,6 +178,24 @@
     box-shadow: 0 0 0 var(--color-brand-deep);
   }
 
+  /* Halloween's own primary fill, same offset-button language as
+     nf-action-filled/-gold. Kept separate rather than themed via a variable
+     swap so a stray token change elsewhere can't silently discolour it. */
+  .nf-action-halloween {
+    background-color: var(--color-halloween);
+    color: var(--color-ink);
+    box-shadow: 3px 3px 0 var(--color-halloween-deep);
+  }
+
+  .nf-action-halloween:hover {
+    background-color: var(--color-gold-bright);
+  }
+
+  .nf-action-halloween:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 var(--color-halloween-deep);
+  }
+
   .nf-action-outline {
     border: 1.5px solid currentColor;
     background-color: transparent;
@@ -190,6 +208,7 @@
   @media (prefers-reduced-motion: reduce) {
     .nf-action-filled:active,
     .nf-action-gold:active,
+    .nf-action-halloween:active,
     .nf-action-outline:active {
       transform: none;
     }
@@ -411,5 +430,258 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ==================================================================
+   SIGNATURE 5 — Event-night atmospherics.
+
+   The Halloween show's visual energy: ambient stage light, a slow wash
+   across a dark surface, a breathing spotlight, film grain. Used only on
+   the dark event surfaces (hero, cosplay, final CTA) so the rest of the
+   site keeps its printed-collectible calm.
+
+   Two rules hold throughout:
+   1. Every animation below is declared inside
+      `prefers-reduced-motion: no-preference`. The static composition is
+      the real design; motion is purely additive and never carries state.
+   2. Only `transform`, `scale`, `translate` and `opacity` animate, so the
+      compositor handles them and nothing repaints on a scroll frame. The
+      grain is deliberately static for the same reason: animating a
+      full-bleed noise field is the one effect here that would cost a
+      repaint per frame, and it buys almost nothing.
+   ================================================================== */
+@layer components {
+  /* A drifting field of coloured light behind a dark section. Sized by
+     the caller (inset, background) so one class serves an orange key
+     light and a purple fill light. */
+  .nf-lightfield {
+    position: absolute;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  /* Slow stage wash travelling across a dark surface, with a long pause
+     between passes so it reads as an event lighting cue rather than the
+     shimmer loop of a loading skeleton. */
+  .nf-sweep {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .nf-sweep::before {
+    content: "";
+    position: absolute;
+    top: -30%;
+    bottom: -30%;
+    width: 34%;
+    background: linear-gradient(
+      100deg,
+      transparent 0%,
+      rgb(255 201 77 / 10%) 45%,
+      rgb(255 138 61 / 14%) 55%,
+      transparent 100%
+    );
+    transform: translateX(-160%) skewX(-12deg);
+  }
+
+  /* A spotlight cone pointing down at the stage. */
+  .nf-spot {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.5;
+    background: radial-gradient(
+      closest-side,
+      rgb(255 138 61 / 50%),
+      transparent 78%
+    );
+  }
+
+  /* Soft glow behind a closing action. */
+  .nf-glow {
+    position: absolute;
+    pointer-events: none;
+    background: radial-gradient(
+      closest-side,
+      rgb(255 138 61 / 42%),
+      transparent 72%
+    );
+  }
+
+  /* Static film grain. An inline feTurbulence rather than an image
+     request, and no animation — see the note at the top of this block. */
+  .nf-grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.16;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 140px 140px;
+  }
+
+  /* Controlled vignette for a full-bleed photo band. */
+  .nf-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 85% at 50% 45%,
+      transparent 38%,
+      rgb(27 18 36 / 68%) 100%
+    );
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .nf-lightfield {
+      animation: nf-lightfield 22s ease-in-out infinite alternate;
+    }
+
+    /* Second light source, out of phase, so the two never pulse together
+       and the field reads as depth rather than a single throb. */
+    .nf-lightfield-alt {
+      animation-duration: 31s;
+      animation-delay: -9s;
+      animation-direction: alternate-reverse;
+    }
+
+    .nf-sweep::before {
+      animation: nf-sweep 17s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    }
+
+    .nf-spot {
+      animation: nf-spot 9s ease-in-out infinite alternate;
+    }
+
+    .nf-spot-alt {
+      animation-duration: 13s;
+      animation-delay: -5s;
+    }
+
+    .nf-glow {
+      animation: nf-glow 6.5s ease-in-out infinite alternate;
+    }
+
+    /* Slow push on a full-bleed photo. Scroll-linked where the browser
+       supports scroll-driven animations (no JS, no scroll listener), a
+       gentle ambient drift everywhere else. */
+    .nf-kenburns {
+      animation: nf-kenburns 30s ease-in-out infinite alternate;
+      will-change: scale, translate;
+    }
+
+    @supports (animation-timeline: view()) {
+      .nf-kenburns {
+        animation: nf-kenburns-scroll linear both;
+        animation-timeline: view();
+        animation-range: entry 0% exit 100%;
+      }
+    }
+
+    /* Scroll-triggered entrance for the stamp. RevealOnScroll marks its
+       wrapper with data-revealed once the section enters view; until then
+       this selector does not match.
+
+       The keyframes start AND end at the mark's resting state and only
+       overshoot in between, and nothing here animates opacity. That is
+       deliberate: an entrance whose first keyframe hides the element can
+       leave content invisible wherever the animation is deferred, frozen,
+       or never started, which is exactly the failure this page must not
+       ship. Frozen at 0%, this stamp looks identical to its final state. */
+    [data-revealed="true"] .nf-on-reveal-stamp {
+      animation: nf-stamp-punch 620ms cubic-bezier(0.2, 0, 0, 1);
+    }
+  }
+
+  @keyframes nf-lightfield {
+    from {
+      transform: translate3d(-2%, -1.5%, 0) scale(1);
+    }
+    to {
+      transform: translate3d(3%, 2%, 0) scale(1.1);
+    }
+  }
+
+  @keyframes nf-sweep {
+    0% {
+      transform: translateX(-160%) skewX(-12deg);
+    }
+    55%,
+    100% {
+      transform: translateX(420%) skewX(-12deg);
+    }
+  }
+
+  @keyframes nf-spot {
+    from {
+      opacity: 0.34;
+      transform: scale(0.94);
+    }
+    to {
+      opacity: 0.72;
+      transform: scale(1.07);
+    }
+  }
+
+  @keyframes nf-glow {
+    from {
+      opacity: 0.45;
+      transform: scale(0.93);
+    }
+    to {
+      opacity: 0.85;
+      transform: scale(1.06);
+    }
+  }
+
+  @keyframes nf-kenburns {
+    from {
+      scale: 1;
+      translate: 0 0;
+    }
+    to {
+      scale: 1.09;
+      translate: 0 -1.5%;
+    }
+  }
+
+  @keyframes nf-kenburns-scroll {
+    from {
+      scale: 1.12;
+      translate: 0 -2.5%;
+    }
+    to {
+      scale: 1;
+      translate: 0 2.5%;
+    }
+  }
+
+  /* The stamp lands: it starts from where it rests, punches out, and
+     settles back. See the note on the rule that uses it. */
+  @keyframes nf-stamp-punch {
+    0% {
+      transform: rotate(-2deg) scale(1);
+    }
+    26% {
+      transform: rotate(-15deg) scale(1.55);
+    }
+    68% {
+      transform: rotate(-2deg) scale(0.96);
+    }
+    100% {
+      transform: rotate(-2deg) scale(1);
+    }
+  }
+
+  /* A strip of masking tape holding a flyer to the wall. Torn edges via
+     clip-path, no image, no extra request. */
+  .nf-tape {
+    position: absolute;
+    pointer-events: none;
+    background: rgb(250 246 240 / 42%);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 22%);
+    clip-path: polygon(1% 12%, 99% 0%, 100% 88%, 0% 100%);
   }
 }

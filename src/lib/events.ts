@@ -89,7 +89,9 @@ export const halloween2026: NFEvent = {
   slug: "halloween-2026",
   name: "Nostalgia Fest Halloween",
   shortName: "Halloween 2026",
-  dateRange: "October 31 to November 1, 2026",
+  // docs/event-data.md says "and", not "to": these are two specific dates,
+  // not a continuous multi-day span.
+  dateRange: "October 31 and November 1, 2026",
   // No hours confirmed yet in docs/event-data.md — omitted, not invented.
   venue: "Square One Event Hall",
   admissionLabel: "Free admission",
