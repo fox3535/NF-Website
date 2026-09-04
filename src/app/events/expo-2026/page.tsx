@@ -1,50 +1,52 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import ExpoAnnouncements from "@/components/ExpoAnnouncements";
+import ExpoExploreFloor from "@/components/ExpoExploreFloor";
+import ExpoFaq from "@/components/ExpoFaq";
+import ExpoFinalCta from "@/components/ExpoFinalCta";
+import ExpoHero from "@/components/ExpoHero";
+import ExpoPlanYourVisit from "@/components/ExpoPlanYourVisit";
+import ExpoSponsors from "@/components/ExpoSponsors";
+import ExpoSubNav from "@/components/ExpoSubNav";
+import ExpoTicketChoices from "@/components/ExpoTicketChoices";
+import ExpoVipExperience from "@/components/ExpoVipExperience";
+import ExpoWhyAttend from "@/components/ExpoWhyAttend";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
-import { expo2026 } from "@/lib/events";
 
 export const metadata: Metadata = {
-  title: "Nostalgia Fest Expo — October 9–11, 2026",
+  title: "Nostalgia Fest Expo 2026 — October 9–11 — Free Admission",
   description:
-    "Nostalgia Fest Expo details and free tickets are coming soon. Free general admission, October 9–11, 2026 at Square One Event Hall, Mississauga.",
+    "Nostalgia Fest Expo, October 9–11, 2026 at Square One Event Hall, Mississauga. 200+ vendor tables of trading cards, toys, comics, art and collectibles. Free General Admission, VIP upgrade available.",
+  openGraph: {
+    title: "Nostalgia Fest Expo 2026",
+    description:
+      "October 9–11, 2026 · Square One Event Hall, Mississauga. Free General Admission.",
+    images: ["/images/campaigns/expo-2026-banner.png"],
+  },
 };
 
 /**
- * Minimal placeholder — the full Expo 2026 event page (programming, FAQ,
- * ticketing integration) is explicitly out of scope for this homepage
- * pass. This exists only so homepage links have somewhere real to go
- * instead of a dead link, per docs/homepage-concept.md section 5.
+ * Expo 2026 — the primary conversion destination for Expo traffic. Owns the
+ * depth the homepage deliberately doesn't: full hours, ticket comparison,
+ * programming, sponsors, VIP and FAQ. See docs/homepage-concept.md section 1
+ * for the homepage/event-page division of labour this follows.
  */
 export default function Expo2026Page() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-2xl px-4 py-20 text-center md:py-32">
-        <p className="text-sm font-semibold tracking-wide text-brand uppercase">
-          {expo2026.shortName}
-        </p>
-        <h1 className="mt-3 text-3xl font-bold text-text md:text-4xl">
-          Full Expo details are coming soon
-        </h1>
-        <p className="tabular-nums mt-4 text-lg text-text-secondary">
-          {expo2026.dateRange} · {expo2026.venue}, Mississauga
-        </p>
-        <p className="mt-2 flex items-center justify-center gap-2 text-base font-semibold text-gold">
-          <span aria-hidden="true">✦</span>
-          Free admission
-        </p>
-        <p className="mt-6 text-text-secondary">
-          Free tickets and the full event guide will be available here
-          before the show. Check back soon, or head home for what we know
-          today.
-        </p>
-        <Link
-          href="/"
-          className="mt-8 inline-flex items-center justify-center rounded-lg bg-brand px-6 py-3 text-base font-semibold text-text-inverse"
-        >
-          Back to the homepage
-        </Link>
+      <ExpoSubNav />
+      <main id="main-content">
+        <ExpoHero />
+        <ExpoTicketChoices />
+        <ExpoWhyAttend />
+        <ExpoAnnouncements />
+        <ExpoExploreFloor />
+        <ExpoSponsors />
+        <ExpoVipExperience />
+        <ExpoPlanYourVisit />
+        <ExpoFaq />
+        <ExpoFinalCta />
       </main>
       <SiteFooter />
     </>
