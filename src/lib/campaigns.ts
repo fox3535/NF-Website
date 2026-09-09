@@ -24,6 +24,12 @@ export interface CampaignArt {
   alt: string;
   width: number;
   height: number;
+  /** CSS object-position, for artwork whose important content sits close to
+   *  an edge the badge/CTA overlays would otherwise sit on top of. Defaults
+   *  to centered when unset. Only shifts within whatever crop room the
+   *  container's aspect ratio actually leaves — negligible when the artwork
+   *  is already close to 16:9. */
+  focalPosition?: string;
 }
 
 /** Branded stand-in shown until real artwork exists. */
@@ -85,7 +91,7 @@ export const campaigns: Campaign[] = [
     showTag: "Oct Expo",
     kind: "Show info",
     headline: "Nostalgia Fest Expo",
-    placeholder: { title: "Nostalgia Fest Expo", tone: "expo" },
+    art: { src: "/images/campaigns/expo-final.png", alt: "Nostalgia Fest Expo", width: 1600, height: 900 },
     href: "/events/expo-2026",
     ctaLabel: "View event",
   },
@@ -94,19 +100,27 @@ export const campaigns: Campaign[] = [
     showTag: "Halloween",
     kind: "Show info",
     headline: "Nostalgia Fest Halloween",
-    placeholder: { title: "Nostalgia Fest Halloween", tone: "halloween" },
+    art: { src: "/images/campaigns/halloween-final.png", alt: "Nostalgia Fest Halloween", width: 1600, height: 900 },
     href: "/events/halloween-2026",
     ctaLabel: "View event",
   },
   {
-    id: "expo-announcement",
+    id: "expo-collectr",
     showTag: "Oct Expo",
-    kind: "Special announcement",
-    headline: "Campaign announcement",
-    // Demonstrates a second campaign hanging off the same show. Announces
-    // nothing — no guest, sponsor, giveaway or activation.
-    placeholder: { title: "Campaign announcement", tone: "announcement" },
-    href: "/events/expo-2026",
+    kind: "Sponsor activation",
+    headline: "Collectr Wall of Nostalgia",
+    // Real sponsor activation, confirmed in docs/event-data.md: Collectr's
+    // "Wall of Nostalgia" with $1000 in cash prizes. Deep-links straight to
+    // its own section on the Expo page rather than just the page top.
+    // v2: re-exported with a taller cork margin above the wordmark so it
+    // clears the badge overlay on its own — no focalPosition override needed.
+    art: {
+      src: "/images/campaigns/collectr-wall-final-v2.png",
+      alt: "Collectr Wall of Nostalgia",
+      width: 1600,
+      height: 900,
+    },
+    href: "/events/expo-2026#collectr-activation",
     ctaLabel: "See details",
   },
 ];

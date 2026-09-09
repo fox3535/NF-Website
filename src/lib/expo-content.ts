@@ -75,6 +75,40 @@ export const EXPO_SPONSORS: Sponsor[] = [
   { id: "card-catcher", name: "Card Catcher" },
 ];
 
+/**
+ * Collectr's activation gets its own dedicated section rather than a card in
+ * ExpoSponsors: unlike the other two sponsors, its activation (the Wall of
+ * Nostalgia, with confirmed cash prizes) has enough real, confirmed detail to
+ * stand on its own rather than being compressed into a shared grid.
+ */
+export interface CollectrPrize {
+  day: string;
+  amount: string;
+  time: string;
+}
+
+export const COLLECTR_ACTIVATION = {
+  sponsorName: "Collectr",
+  title: "Wall of Nostalgia",
+  tagline: "The things that made a generation.",
+  totalPrize: "$1,000",
+  prizes: [
+    { day: "Friday, Oct 9", amount: "$200", time: "7 PM" },
+    { day: "Saturday, Oct 10", amount: "$300", time: "5 PM" },
+    { day: "Sunday, Oct 11", amount: "$500", time: "4 PM" },
+  ] satisfies CollectrPrize[],
+  banners: [
+    {
+      src: "/images/campaigns/collectrbanner.png",
+      alt: "Collectr Wall of Nostalgia: $1000 cash prizes",
+    },
+    {
+      src: "/images/campaigns/collectrbanner2.png",
+      alt: "Collectr x Nostalgia Fest Wall of Nostalgia poster, powered by Slab Sharks, Collectr and Card Catcher",
+    },
+  ],
+};
+
 export interface FaqItem {
   question: string;
   answer: string;

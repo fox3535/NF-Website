@@ -42,13 +42,27 @@ function CampaignCard({
 }) {
   const large = size === "large";
 
+  // Secondary cards sit beside a much bigger primary and read as recessive
+  // against the section's own purple background, so they carry a resting
+  // frame glow the primary does not: not an overlay on the artwork, a
+  // box-shadow on the card itself, so it never competes with the image.
+  //
+  // The glow is explicitly suppressed while :focus-visible ([&:not(...)])
+  // rather than left to compete with it: both are box-shadow, and the
+  // sitewide focus ring below needs the property to itself to render
+  // reliably for keyboard users.
+  const glow = large
+    ? ""
+    : "[&:not(:focus-visible)]:shadow-[0_0_0_1px_rgba(131,46,255,0.45),0_10px_28px_-10px_rgba(131,46,255,0.6)] [&:not(:focus-visible):hover]:shadow-[0_0_0_1px_rgba(255,201,77,0.4),0_0_0_3px_rgba(131,46,255,0.4),0_14px_32px_-8px_rgba(131,46,255,0.7)]";
+
   return (
     <Link
       href={campaign.href}
       id={id}
       aria-label={`${campaign.headline}: ${campaign.ctaLabel}`}
       className={
-        "group relative block overflow-hidden rounded-xl bg-brand-deep outline outline-white/10 transition-[outline-color,translate] duration-200 ease-out group-hover:outline-gold-bright/60 hover:outline-gold-bright/60 md:hover:-translate-y-1 " +
+        "group relative block cursor-pointer overflow-hidden rounded-xl bg-brand-deep outline outline-white/10 transition-[outline-color,translate,box-shadow] duration-200 ease-out hover:outline-gold-bright/60 focus-visible:outline-gold-bright focus-visible:ring-4 focus-visible:ring-gold-bright focus-visible:ring-offset-2 focus-visible:ring-offset-brand-deep md:hover:-translate-y-1 " +
+        glow + " " +
         className
       }
     >
@@ -66,27 +80,40 @@ function CampaignCard({
           className={
             fillsFrame(campaign.art) ? "object-cover" : "object-contain"
           }
+          style={
+            campaign.art.focalPosition
+              ? { objectPosition: campaign.art.focalPosition }
+              : undefined
+          }
         />
       ) : campaign.placeholder ? (
         <CampaignPlaceholder placeholder={campaign.placeholder} size={size} />
       ) : null}
 
-      {/* Scrim only where the metadata sits, so the artwork stays readable. */}
+      {/* Scrim only where the metadata sits, so the artwork stays readable.
+          Fixed pixel heights here would eat a much bigger share of the
+          shorter secondary cards than the primary, so they scale by size. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-ink/70 to-transparent"
+        className={
+          "pointer-events-none absolute inset-x-0 top-0 bg-gradient-to-b from-ink/70 to-transparent " +
+          (large ? "h-24" : "h-14")
+        }
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-ink/70 to-transparent"
+        className={
+          "pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/70 to-transparent " +
+          (large ? "h-20" : "h-12")
+        }
       />
 
       {/* Two tags. No placeholder chip — the artwork says so itself. */}
       <div className="absolute inset-x-0 top-0 flex flex-wrap items-center gap-1.5 p-3 md:p-4">
-        <ShowTag label={campaign.showTag} />
+        <ShowTag label={campaign.showTag} tone="dark" />
         <span
           className={
-            "nf-eyebrow rounded-md border border-white/25 bg-ink/50 px-2 py-1 text-pink-bright " +
+            "nf-eyebrow rounded-md border border-ink/15 bg-brand-soft px-2 py-1 text-ink " +
             (large ? "text-[10px]" : "text-[9px]")
           }
         >
@@ -94,17 +121,15 @@ function CampaignCard({
         </span>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 flex justify-end p-3 md:p-4">
-        <span
-          className={
-            "nf-action nf-action-gold group-hover:bg-pink-bright " +
-            (large ? "px-4 py-2 text-sm" : "px-3 py-1.5 text-xs")
-          }
-        >
-          {campaign.ctaLabel}
-          <span aria-hidden="true">→</span>
-        </span>
-      </div>
+      {/* No visible CTA chip: the whole card is the link (aria-label above
+          carries the action for assistive tech), so nothing needs to sit on
+          top of the artwork to say so. */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute right-3 bottom-3 flex items-center gap-1 text-sm font-semibold text-paper opacity-80 transition-transform duration-200 ease-out group-hover:translate-x-0.5 md:right-4 md:bottom-4"
+      >
+        →
+      </span>
     </Link>
   );
 }

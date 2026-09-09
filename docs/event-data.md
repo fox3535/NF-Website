@@ -20,9 +20,14 @@ This is the authoritative file for public Nostalgia Fest event information. Neve
   or guess who. Publish only that a special guest announcement is coming.
 - **Parking:** free parking confirmed at the venue.
 - **Sponsors / activations:** Slab Sharks, Collectr and Card Catcher are
-  confirmed sponsors of Expo 2026. Specific activation details beyond the
-  sponsorship itself (what each is doing on-site) are not yet confirmed —
-  do not invent them.
+  confirmed sponsors of Expo 2026. Collectr's activation is a "Wall of
+  Nostalgia" with $1000 in cash prizes and raffles, confirmed, broken down
+  by day:
+  - Friday, Oct 9 — $200 @ 7 PM
+  - Saturday, Oct 10 — $300 @ 5 PM
+  - Sunday, Oct 11 — $500 @ 4 PM
+  Specific activation details for Slab Sharks and Card Catcher beyond the
+  sponsorship itself are not yet confirmed — do not invent them.
 
 ## Nostalgia Fest Halloween
 - **Dates:** October 31 and November 1, 2026

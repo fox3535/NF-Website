@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ExpoAnnouncements from "@/components/ExpoAnnouncements";
+import ExpoCollectrActivation from "@/components/ExpoCollectrActivation";
 import ExpoExploreFloor from "@/components/ExpoExploreFloor";
 import ExpoFaq from "@/components/ExpoFaq";
 import ExpoFinalCta from "@/components/ExpoFinalCta";
@@ -43,6 +44,7 @@ export default function Expo2026Page() {
         <ExpoAnnouncements />
         <ExpoExploreFloor />
         <ExpoSponsors />
+        <ExpoCollectrActivation />
         <ExpoVipExperience />
         <ExpoPlanYourVisit />
         <ExpoFaq />

@@ -18,7 +18,7 @@ export default function ShowTag({
 }) {
   const palette =
     tone === "dark"
-      ? "border-ink/25 bg-ink text-paper"
+      ? "border-white/20 bg-brand-strong text-paper"
       : "border-white/30 bg-white/12 text-paper";
 
   return (

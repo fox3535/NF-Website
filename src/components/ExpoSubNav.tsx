@@ -1,6 +1,7 @@
 const LINKS = [
   { href: "#tickets", label: "Tickets" },
   { href: "#announcements", label: "What's Happening" },
+  { href: "#collectr-activation", label: "Collectr" },
   { href: "#vip", label: "VIP" },
   { href: "#plan-your-visit", label: "Plan Your Visit" },
 ];
