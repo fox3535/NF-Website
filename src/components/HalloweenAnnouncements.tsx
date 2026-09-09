@@ -70,6 +70,18 @@ export default function HalloweenAnnouncements() {
       aria-labelledby="announcements-heading"
       className="nf-grid relative overflow-hidden bg-brand-deep py-16 md:py-24"
     >
+      {/* The only dark section on the page with no light source of its own,
+          which made the run from the lit cosplay stage into it feel like a
+          cut rather than a transition. */}
+      <div
+        aria-hidden="true"
+        className="nf-lightfield inset-[-14%]"
+        style={{
+          background:
+            "radial-gradient(50% 46% at 82% 8%, rgb(255 138 61 / 26%) 0%, transparent 72%)",
+        }}
+      />
+      <div aria-hidden="true" className="nf-grain" />
       <RevealOnScroll className="relative mx-auto max-w-6xl px-4 md:px-6">
         <div className="grid items-center gap-12 md:grid-cols-12 md:gap-14">
           <div className="md:col-span-5">

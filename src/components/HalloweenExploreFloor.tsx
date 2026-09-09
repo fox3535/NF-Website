@@ -28,9 +28,11 @@ export default function HalloweenExploreFloor() {
   return (
     <section
       aria-labelledby="explore-floor-heading"
-      className="bg-paper-strong py-16 md:py-24"
+      className="relative overflow-hidden bg-paper-strong py-16 md:py-24"
     >
-      <RevealOnScroll className="mx-auto max-w-6xl px-4 md:px-6">
+      <div aria-hidden="true" className="nf-warmlight" />
+
+      <RevealOnScroll className="relative mx-auto max-w-6xl px-4 md:px-6">
         <div className="grid gap-10 md:grid-cols-12 md:items-end md:gap-12">
           <div className="md:col-span-5">
             <p className="nf-eyebrow text-xs text-brand">Explore the floor</p>

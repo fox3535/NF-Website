@@ -90,16 +90,15 @@ function CampaignCard({
         <CampaignPlaceholder placeholder={campaign.placeholder} size={size} />
       ) : null}
 
-      {/* Scrim only where the metadata sits, so the artwork stays readable.
-          Fixed pixel heights here would eat a much bigger share of the
-          shorter secondary cards than the primary, so they scale by size. */}
-      <div
-        aria-hidden="true"
-        className={
-          "pointer-events-none absolute inset-x-0 top-0 bg-gradient-to-b from-ink/70 to-transparent " +
-          (large ? "h-24" : "h-14")
-        }
-      />
+      {/* Bottom scrim only. There used to be a matching one across the top
+          for the badges, but both badges carry their own solid fill and
+          border, so it bought them no legibility — and on light artwork it
+          was actively harmful: over Collectr's cream cork board the
+          from-ink/70 wash read as a grey haze band across the top of the
+          card, while over the two dark photos it was invisible. That made
+          one card look different from its neighbour for a reason that had
+          nothing to do with the badges sitting on it. The arrow below has
+          no background of its own, so its scrim stays. */}
       <div
         aria-hidden="true"
         className={
@@ -108,16 +107,42 @@ function CampaignCard({
         }
       />
 
-      {/* Two tags. No placeholder chip — the artwork says so itself. */}
-      <div className="absolute inset-x-0 top-0 flex flex-wrap items-center gap-1.5 p-3 md:p-4">
-        <ShowTag label={campaign.showTag} tone="dark" />
-        <span
-          className={
-            "nf-eyebrow rounded-md border border-ink/15 bg-brand-soft px-2 py-1 text-ink " +
-            (large ? "text-[10px]" : "text-[9px]")
-          }
-        >
-          {campaign.kind}
+      {/* One segmented tag: show, then campaign kind. No placeholder chip,
+          the artwork says so itself.
+
+          Both segments are 10px on every card, large or small. The kind
+          chip used to drop to 9px on the secondaries while ShowTag beside
+          it stayed at 10px, which left it 1.5px shorter and pushed it
+          0.8px down by items-center, so their top edges did not line up.
+
+          They are also flush rather than separated by a gap, because a gap
+          is a hole and what shows through it is whatever the artwork
+          happens to be. The same 6px read completely differently per card:
+          over Halloween's dark photo it merged into the ShowTag and looked
+          tight, over Collectr's cream cork board it became a lit slot that
+          pushed the two chips apart. Measured they were always identical;
+          perceived they were not. Filling the gap with a backing plate
+          fixed Collectr but left a visibly darker block sitting on the two
+          already-dark artworks, so the gap is removed instead: with the
+          chips flush there is nothing for the artwork to show through, and
+          the pair reads the same on light and dark alike without adding
+          any weight of its own. The dark-to-light seam between the two
+          segments is its own divider, so no border is needed there. */}
+      <div className="absolute inset-x-0 top-0 flex flex-wrap items-center gap-1.5 p-2 md:p-2.5">
+        {/* items-stretch, not items-center: on a narrow secondary card a
+            long kind label wraps to two lines, and centering would leave
+            the shorter segment floating with the artwork showing above and
+            below the seam. Stretching keeps the two halves the same height
+            whichever one wraps. */}
+        <span className="inline-flex items-stretch">
+          <ShowTag
+            label={campaign.showTag}
+            tone="dark"
+            className="rounded-r-none"
+          />
+          <span className="nf-eyebrow rounded-md rounded-l-none border border-l-0 border-ink/15 bg-brand-soft px-2 py-1 text-[10px] text-ink">
+            {campaign.kind}
+          </span>
         </span>
       </div>
 

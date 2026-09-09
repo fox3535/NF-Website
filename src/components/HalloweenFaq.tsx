@@ -8,8 +8,13 @@ import { HALLOWEEN_FAQ } from "@/lib/halloween-content";
  */
 export default function HalloweenFaq() {
   return (
-    <section aria-labelledby="faq-heading" className="bg-paper py-14 md:py-20">
-      <RevealOnScroll className="mx-auto max-w-3xl px-4 md:px-6">
+    <section
+      aria-labelledby="faq-heading"
+      className="relative overflow-hidden bg-paper py-14 md:py-20"
+    >
+      <div aria-hidden="true" className="nf-warmlight" />
+
+      <RevealOnScroll className="relative mx-auto max-w-3xl px-4 md:px-6">
         <p className="nf-eyebrow text-xs text-brand">Good to know</p>
         <h2
           id="faq-heading"

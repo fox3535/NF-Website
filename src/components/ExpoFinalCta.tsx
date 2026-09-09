@@ -9,6 +9,24 @@ export default function ExpoFinalCta() {
       aria-labelledby="expo-final-cta-heading"
       className="nf-halftone relative overflow-hidden bg-brand py-20 md:py-28"
     >
+      {/* Tear line onto the FAQ's paper surface above, then one slow gold
+          light behind the close so the final purple field has depth rather
+          than reading as a flat slab. */}
+      <div
+        aria-hidden="true"
+        className="nf-notch absolute inset-x-0 top-0 z-10"
+        style={{ ["--nf-notch-color" as string]: "var(--color-paper)" }}
+      />
+      <div
+        aria-hidden="true"
+        className="nf-lightfield inset-[-16%]"
+        style={{
+          background:
+            "radial-gradient(52% 50% at 50% 34%, rgb(255 201 77 / 26%) 0%, transparent 72%)",
+        }}
+      />
+      <div aria-hidden="true" className="nf-grain" />
+
       <RevealOnScroll className="relative mx-auto max-w-3xl px-4 text-center text-paper md:px-6">
         <span aria-hidden="true" className="text-2xl text-gold-bright">
           ✦

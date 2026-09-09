@@ -43,9 +43,19 @@ export default function ExpoTicketChoices() {
     <section
       id="tickets"
       aria-labelledby="tickets-heading"
-      className="bg-paper py-12 md:py-16"
+      className="relative overflow-hidden bg-paper py-14 md:py-20"
     >
-      <RevealOnScroll className="mx-auto max-w-6xl px-4 md:px-6">
+      {/* Ticket tear off the hero directly above. The perforation is the
+          page's own vocabulary rather than decoration, and this is the one
+          section where it is also literally about tickets. */}
+      <div
+        aria-hidden="true"
+        className="nf-notch absolute inset-x-0 top-0"
+        style={{ ["--nf-notch-color" as string]: "var(--color-ink)" }}
+      />
+      <div aria-hidden="true" className="nf-warmlight nf-warmlight-gold" />
+
+      <RevealOnScroll className="relative mx-auto max-w-6xl px-4 md:px-6">
         <p className="nf-eyebrow text-xs text-brand">How to attend</p>
         <h2
           id="tickets-heading"

@@ -60,7 +60,8 @@ export const HALLOWEEN_FAQ: FaqItem[] = [
   },
   {
     question: "When is the event?",
-    answer: "October 31 and November 1, 2026, at Square One Event Hall.",
+    answer:
+      "October 31 and November 1, 2026, at Square One Event Hall, 199 Rathburn Rd W, Mississauga, Ontario.",
   },
   {
     question: "Is there a cosplay competition?",

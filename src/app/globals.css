@@ -685,3 +685,51 @@
     clip-path: polygon(1% 12%, 99% 0%, 100% 88%, 0% 100%);
   }
 }
+
+/* ==================================================================
+   SIGNATURE 6 — Warm light on a paper surface.
+
+   Signature 5 gives the dark event sections their atmosphere. The light
+   sections between them were staying flat cream, so a page could open on a
+   lit stage and then run through three unlit utility bands.
+
+   This is the paper-surface counterpart: two very low opacity washes, one
+   warm from the trailing top corner and one brand purple from the leading
+   bottom, so cream reads as lit paper rather than as the default page
+   background. Static, no animation, no repaint cost, and far below the
+   contrast floor of anything sitting on top of it.
+   ================================================================== */
+@layer components {
+  .nf-warmlight {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        68% 52% at 88% 0%,
+        rgb(255 138 61 / 13%) 0%,
+        transparent 62%
+      ),
+      radial-gradient(
+        58% 48% at 2% 100%,
+        rgb(131 46 255 / 9%) 0%,
+        transparent 62%
+      );
+  }
+
+  /* Expo's own version of the same idea: gold rather than Halloween
+     orange, so the two pages share the technique and not the palette. */
+  .nf-warmlight-gold {
+    background:
+      radial-gradient(
+        68% 52% at 88% 0%,
+        rgb(255 201 77 / 14%) 0%,
+        transparent 62%
+      ),
+      radial-gradient(
+        58% 48% at 2% 100%,
+        rgb(131 46 255 / 9%) 0%,
+        transparent 62%
+      );
+  }
+}

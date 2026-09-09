@@ -94,6 +94,8 @@ export const halloween2026: NFEvent = {
   dateRange: "October 31 and November 1, 2026",
   // No hours confirmed yet in docs/event-data.md — omitted, not invented.
   venue: "Square One Event Hall",
+  // Same venue as Expo, same confirmed address.
+  address: "199 Rathburn Rd W, Mississauga, Ontario",
   admissionLabel: "Free admission",
   // No photography exists yet for this event — the card renders typographically.
   href: "/events/halloween-2026",

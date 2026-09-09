@@ -69,9 +69,9 @@ export default function HalloweenHero() {
         </span>
       </div>
 
-      <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-12 md:items-center md:gap-12 md:px-6 md:py-20">
+      <div className="relative mx-auto grid max-w-6xl gap-6 px-4 py-8 md:grid-cols-12 md:items-center md:gap-12 md:px-6 md:py-20">
         <div className="md:col-span-5">
-          <div className="nf-case nf-case-ink mx-auto max-w-sm md:max-w-none">
+          <div className="nf-case nf-case-ink mx-auto max-w-[260px] md:max-w-none">
             <div className="nf-case-label">
               <ShowTag label="Halloween" tone="dark" />
               <span className="nf-eyebrow rounded-md border border-ink/15 bg-brand-soft px-2 py-1 text-[10px] text-ink">

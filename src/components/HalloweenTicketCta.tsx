@@ -34,9 +34,19 @@ export default function HalloweenTicketCta() {
     <section
       id="tickets"
       aria-labelledby="tickets-heading"
-      className="bg-paper py-14 md:py-20"
+      className="relative overflow-hidden bg-paper py-14 md:py-20"
     >
-      <RevealOnScroll className="mx-auto max-w-6xl px-4 md:px-6">
+      {/* Ticket tear off the dark hero above, then a warm wash so the first
+          light section does not arrive as flat cream straight after a lit
+          one. Both are static (globals.css, Signature 6). */}
+      <div
+        aria-hidden="true"
+        className="nf-notch absolute inset-x-0 top-0"
+        style={{ ["--nf-notch-color" as string]: "var(--color-ink)" }}
+      />
+      <div aria-hidden="true" className="nf-warmlight" />
+
+      <RevealOnScroll className="relative mx-auto max-w-6xl px-4 md:px-6">
         <div className="grid items-center gap-10 md:grid-cols-12 md:gap-12">
           <div className="md:col-span-5">
             <p className="nf-eyebrow text-xs text-brand">How to attend</p>

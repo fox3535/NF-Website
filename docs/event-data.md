@@ -32,6 +32,7 @@ This is the authoritative file for public Nostalgia Fest event information. Neve
 ## Nostalgia Fest Halloween
 - **Dates:** October 31 and November 1, 2026
 - **Venue:** Square One Event Hall
+- **Address:** 199 Rathburn Rd W, Mississauga, Ontario
 - **General admission:** FREE
 - **Cosplay competition:** a major cosplay competition is confirmed as part
   of the event. Prize amounts, judging rules, categories and schedule are
