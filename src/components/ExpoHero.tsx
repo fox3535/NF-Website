@@ -110,10 +110,7 @@ export default function ExpoHero() {
           <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
             <p className="flex items-center gap-2 text-base font-semibold text-gold-bright">
               <span aria-hidden="true" className="text-lg leading-none">✦</span>
-              Free General Admission
-            </p>
-            <p className="text-sm text-text-inverse-secondary">
-              VIP upgrade available
+              Free General Admission for everyone
             </p>
           </div>
 

@@ -3,6 +3,19 @@
 // here, and each list is a plain data array so a newly confirmed detail is
 // a data change, not a component change.
 
+import type { Sponsor } from "./expo-content";
+
+/**
+ * Confirmed sponsors of Halloween 2026, matching the approved campaign
+ * poster (halloween-landing-banner.png) and docs/event-data.md. Same
+ * sponsors as Expo 2026, confirmed separately for this event.
+ */
+export const HALLOWEEN_SPONSORS: Sponsor[] = [
+  { id: "slab-sharks", name: "Slab Sharks" },
+  { id: "collectr", name: "Collectr" },
+  { id: "card-catcher", name: "Card Catcher" },
+];
+
 export interface Announcement {
   id: string;
   kind: string;
@@ -15,18 +28,34 @@ export interface Announcement {
 
 /**
  * Beyond the cosplay competition (which gets its own dedicated section,
- * see CosplayCompetition.tsx), nothing else is confirmed yet for Halloween
- * 2026. This stays a single honest "more coming" slot rather than being
- * padded out, and is easy to extend the moment something else is confirmed.
+ * see CosplayCompetition.tsx), these are confirmed for Halloween 2026,
+ * matching the approved campaign poster (halloween-landing-banner.png) and
+ * docs/event-data.md. Reconciled from a documentation-drift audit: the
+ * poster already made these claims publicly, this data now matches it.
+ *
+ * The Pokemon TCG tournament's organizer is explicitly NOT confirmed
+ * (docs/event-data.md). Do not add an organizer name to this description
+ * without updating that file first.
  */
 export const HALLOWEEN_ANNOUNCEMENTS: Announcement[] = [
   {
-    id: "more-programming",
-    kind: "Announcement",
-    title: "More Halloween programming",
+    id: "giveaways",
+    kind: "Giveaways",
+    title: "Hourly giveaways",
+    description: "Giveaways run throughout the show, both days.",
+  },
+  {
+    id: "parking",
+    kind: "Parking",
+    title: "Free parking",
+    description: "Free parking is confirmed at the venue.",
+  },
+  {
+    id: "pokemon-tcg",
+    kind: "Tournament",
+    title: "Pokemon TCG tournament",
     description:
-      "Giveaways, activations and entertainment details are announced closer to the show.",
-    pending: true,
+      "A Pokemon TCG tournament is part of the show. Who's running it hasn't been announced yet.",
   },
 ];
 

@@ -117,8 +117,7 @@ export interface FaqItem {
 export const EXPO_FAQ: FaqItem[] = [
   {
     question: "Is admission free?",
-    answer:
-      "Yes. General Admission to Nostalgia Fest Expo is free. A separate paid VIP option also exists for anyone who wants it, but it's never required to attend.",
+    answer: "Yes. General Admission to Nostalgia Fest Expo is free for everyone.",
   },
   {
     question: "What are the hours?",
@@ -127,10 +126,6 @@ export const EXPO_FAQ: FaqItem[] = [
   {
     question: "Where is the event?",
     answer: "Square One Event Hall, 199 Rathburn Rd W, Mississauga, Ontario.",
-  },
-  {
-    question: "Is VIP required?",
-    answer: "No. VIP is an optional upgrade on top of free General Admission.",
   },
   {
     question: "Can I attend multiple days?",

@@ -40,7 +40,7 @@ export default function HalloweenExploreFloor() {
               id="explore-floor-heading"
               className="nf-display mt-3 text-4xl text-text md:text-5xl"
             >
-              Still the full NF marketplace
+              150+ vendor tables, still the full NF marketplace
             </h2>
             <p className="mt-4 max-w-prose text-text-secondary md:text-lg">
               Costumes are the theme, not the whole show. The same floor of

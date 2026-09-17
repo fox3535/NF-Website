@@ -3,41 +3,32 @@ import TicketPass from "./TicketPass";
 import { EXPO_TICKET_TIERS, TICKET_URLS } from "@/lib/tickets";
 
 /**
- * Ticket choices — deliberately placed right after the hero. Shaped like
- * actual admission passes (see TicketPass) rather than SaaS pricing cards.
- * General Admission gets more visual weight (larger, leads the row) since
- * it's the standard way to attend; VIP sits smaller and clearly secondary,
- * so neither implies the other is required (Product Rule 8).
+ * A single admission pass, not a ticket-tier comparison: Expo 2026 sells no
+ * VIP tier (docs/event-data.md, business decision), so unlike the earlier
+ * version of this section there is nothing to compare General Admission
+ * against. Free General Admission is the whole story here, the same
+ * composition Halloween's ticket section already uses for the same reason
+ * (see HalloweenTicketCta.tsx): the pass takes the wider column and the
+ * words take the narrower one, rather than a full-width heading over a
+ * half-width pass leaving the trailing column empty.
  */
 export default function ExpoTicketChoices() {
   const general = EXPO_TICKET_TIERS.find((t) => t.id === "general");
-  const vip = EXPO_TICKET_TIERS.find((t) => t.id === "vip");
-  if (!general || !vip) return null;
+  if (!general) return null;
 
-  function actionFor(tone: "paper" | "ink") {
-    if (TICKET_URLS["expo-2026"]) {
-      return (
-        <a
-          href={TICKET_URLS["expo-2026"]}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={
-            tone === "paper"
-              ? "nf-action nf-action-filled px-6 py-3 text-sm"
-              : "nf-action nf-action-gold px-6 py-3 text-sm"
-          }
-        >
-          Get your tickets
-          <span aria-hidden="true">→</span>
-        </a>
-      );
-    }
-    return (
-      <p className={"nf-stamp " + (tone === "paper" ? "text-brand" : "text-gold-bright")}>
-        Ticket link coming soon
-      </p>
-    );
-  }
+  const action = TICKET_URLS["expo-2026"] ? (
+    <a
+      href={TICKET_URLS["expo-2026"]}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="nf-action nf-action-filled px-6 py-3 text-sm"
+    >
+      Get your tickets
+      <span aria-hidden="true">→</span>
+    </a>
+  ) : (
+    <p className="nf-stamp text-brand">Ticket link coming soon</p>
+  );
 
   return (
     <section
@@ -56,40 +47,33 @@ export default function ExpoTicketChoices() {
       <div aria-hidden="true" className="nf-warmlight nf-warmlight-gold" />
 
       <RevealOnScroll className="relative mx-auto max-w-6xl px-4 md:px-6">
-        <p className="nf-eyebrow text-xs text-brand">How to attend</p>
-        <h2
-          id="tickets-heading"
-          className="nf-display mt-3 text-4xl text-text md:text-5xl"
-        >
-          Pick your pass
-        </h2>
-        <p className="mt-3 max-w-prose text-text-secondary">
-          General Admission is free and is how most people attend. VIP is a
-          paid upgrade for anyone who wants more. It&apos;s never required.
-        </p>
+        <div className="grid items-center gap-10 md:grid-cols-12 md:gap-12">
+          <div className="md:col-span-5">
+            <p className="nf-eyebrow text-xs text-brand">How to attend</p>
+            <h2
+              id="tickets-heading"
+              className="nf-display mt-3 text-4xl text-text md:text-5xl"
+            >
+              Free to attend, every day of the show.
+            </h2>
+            <p className="mt-4 max-w-prose text-text-secondary">
+              General Admission is free, no cost, no catch. There is no paid
+              tier to unlock anything on this page.
+            </p>
+          </div>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-[3fr_2fr] md:items-stretch">
-          <TicketPass
-            eyebrow={general.name}
-            kindLabel="Standard entry"
-            price={general.priceLabel}
-            priceTone="text-brand"
-            metaLabel="Expo 2026 · Oct 9 to 11"
-            description={general.description}
-            action={actionFor("paper")}
-            tone="paper"
-          />
-          <TicketPass
-            eyebrow={vip.name}
-            kindLabel="Optional upgrade"
-            price="VIP"
-            priceTone="text-gold-bright"
-            metaLabel="Expo 2026 · Oct 9 to 11"
-            description={`${vip.priceLabel}. ${vip.description}`}
-            action={actionFor("ink")}
-            tone="ink"
-            foil
-          />
+          <div className="md:col-span-7">
+            <TicketPass
+              eyebrow={general.name}
+              kindLabel="Standard entry"
+              price={general.priceLabel}
+              priceTone="text-brand"
+              metaLabel="Expo 2026 · Oct 9 to 11"
+              description={general.description}
+              action={action}
+              tone="paper"
+            />
+          </div>
         </div>
       </RevealOnScroll>
     </section>

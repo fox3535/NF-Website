@@ -43,9 +43,8 @@ export default function ExpoFinalCta() {
         <div className="mt-3 flex flex-wrap items-center justify-center gap-x-6 gap-y-1">
           <p className="flex items-center gap-2 text-base font-semibold text-gold-bright">
             <span aria-hidden="true" className="text-lg leading-none">✦</span>
-            Free General Admission
+            Free General Admission for everyone
           </p>
-          <p className="text-sm text-paper/85">VIP upgrade available</p>
         </div>
         <div className="mt-8 flex justify-center">
           <TicketButton

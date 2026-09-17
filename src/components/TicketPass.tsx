@@ -3,9 +3,9 @@ import type { ReactNode } from "react";
 /**
  * A physical admission-pass treatment: identity stub, a perforated tear
  * line with punched edge notches, then a price/action stub — the shape of
- * an actual event ticket rather than a SaaS pricing card. Shared by the
- * early ticket-choice comparison and the deeper VIP section so both read as
- * the same object at different sizes.
+ * an actual event ticket rather than a SaaS pricing card. Shared by every
+ * event's ticket section so a pass reads as the same object everywhere it
+ * appears, whether the event sells one tier or several.
  */
 export default function TicketPass({
   eyebrow,

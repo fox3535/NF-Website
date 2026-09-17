@@ -9,7 +9,6 @@ import ExpoPlanYourVisit from "@/components/ExpoPlanYourVisit";
 import ExpoSponsors from "@/components/ExpoSponsors";
 import ExpoSubNav from "@/components/ExpoSubNav";
 import ExpoTicketChoices from "@/components/ExpoTicketChoices";
-import ExpoVipExperience from "@/components/ExpoVipExperience";
 import ExpoWhyAttend from "@/components/ExpoWhyAttend";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
@@ -17,7 +16,7 @@ import SiteHeader from "@/components/SiteHeader";
 export const metadata: Metadata = {
   title: "Nostalgia Fest Expo 2026: October 9 to 11, Free Admission",
   description:
-    "Nostalgia Fest Expo, October 9 to 11, 2026 at Square One Event Hall, Mississauga. 200+ vendor tables of trading cards, toys, comics, art and collectibles. Free General Admission, VIP upgrade available.",
+    "Nostalgia Fest Expo, October 9 to 11, 2026 at Square One Event Hall, Mississauga. 200+ vendor tables of trading cards, toys, comics, art and collectibles. Free General Admission for everyone.",
   openGraph: {
     title: "Nostalgia Fest Expo 2026",
     description:
@@ -28,9 +27,13 @@ export const metadata: Metadata = {
 
 /**
  * Expo 2026 — the primary conversion destination for Expo traffic. Owns the
- * depth the homepage deliberately doesn't: full hours, ticket comparison,
- * programming, sponsors, VIP and FAQ. See docs/homepage-concept.md section 1
- * for the homepage/event-page division of labour this follows.
+ * depth the homepage deliberately doesn't: full hours, programming, sponsors
+ * and FAQ. See docs/homepage-concept.md section 1 for the homepage/event-page
+ * division of labour this follows.
+ *
+ * Business decision (docs/event-data.md): Expo 2026 sells no VIP tier. It is
+ * Free General Admission only, so this page carries no dedicated VIP
+ * section, ticket comparison or VIP messaging anywhere.
  */
 export default function Expo2026Page() {
   return (
@@ -45,7 +48,6 @@ export default function Expo2026Page() {
         <ExpoExploreFloor />
         <ExpoSponsors />
         <ExpoCollectrActivation />
-        <ExpoVipExperience />
         <ExpoPlanYourVisit />
         <ExpoFaq />
         <ExpoFinalCta />

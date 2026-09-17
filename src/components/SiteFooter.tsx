@@ -37,9 +37,36 @@ export default function SiteFooter() {
         </div>
       </div>
 
-      <p className="mx-auto mt-10 max-w-6xl px-4 text-xs md:px-6">
-        © {new Date().getFullYear()} Nostalgia Fest. All rights reserved.
-      </p>
+      {/* Legal row. Kept separate from the site navigation above so the
+          footer does not turn into one long undifferentiated link list, and
+          deliberately just three links: no Cookie Settings entry, because the
+          site sets no cookies and runs no optional tracking for a preference
+          control to govern (see docs/site-compliance.md). Add one here if and
+          when analytics or advertising tracking is actually introduced. */}
+      <div className="mx-auto mt-10 flex max-w-6xl flex-col gap-4 border-t border-border-inverse px-4 pt-6 text-xs md:flex-row md:items-center md:justify-between md:px-6">
+        <p>© {new Date().getFullYear()} Nostalgia Fest. All rights reserved.</p>
+
+        <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <Link
+            href="/privacy"
+            className="inline-flex min-h-[24px] items-center hover:text-text-inverse hover:underline"
+          >
+            Privacy
+          </Link>
+          <Link
+            href="/terms"
+            className="inline-flex min-h-[24px] items-center hover:text-text-inverse hover:underline"
+          >
+            Terms
+          </Link>
+          <Link
+            href="/refunds"
+            className="inline-flex min-h-[24px] items-center hover:text-text-inverse hover:underline"
+          >
+            Refunds
+          </Link>
+        </nav>
+      </div>
     </footer>
   );
 }

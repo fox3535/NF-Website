@@ -15,14 +15,17 @@ export const TICKET_URLS: Record<string, string | null> = {
 };
 
 export interface TicketTier {
-  id: "general" | "vip";
+  id: "general";
   name: string;
   priceLabel: string;
   description: string;
 }
 
-// Expo-specific: Expo is the only confirmed event with a paid VIP tier
-// (docs/event-data.md). Halloween has no VIP data, so it has no tier list.
+// Business decision (docs/event-data.md): Expo 2026 does not sell VIP
+// tickets. Free General Admission is the only tier. Do not re-add a VIP
+// entry here without a corresponding confirmed update to
+// docs/event-data.md and Chris's sign-off, per the same discipline as
+// TICKET_URLS below.
 export const EXPO_TICKET_TIERS: TicketTier[] = [
   {
     id: "general",
@@ -31,11 +34,16 @@ export const EXPO_TICKET_TIERS: TicketTier[] = [
     description:
       "The standard way to attend Nostalgia Fest Expo, no cost, no catch.",
   },
-  {
-    id: "vip",
-    name: "VIP Experience",
-    priceLabel: "Pricing coming soon",
-    description:
-      "An optional paid upgrade on top of free General Admission. Never required to attend.",
-  },
 ];
+
+/**
+ * True once any event actually points at an external ticketing provider.
+ *
+ * The legal pages read this (via src/lib/legal.ts) so they can never
+ * describe a ticket-provider relationship that does not exist yet: today
+ * every entry above is null, so no third party receives anything when
+ * someone uses a ticket action.
+ */
+export function hasAnyTicketProvider(): boolean {
+  return Object.values(TICKET_URLS).some((url) => Boolean(url));
+}

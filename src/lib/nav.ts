@@ -1,10 +1,11 @@
 // Shared navigation and the global ticket wording.
 //
-// "Get your tickets" rather than "Get free tickets" wherever the CTA stands
-// for the whole ticket flow: Nostalgia Fest has free general admission and
-// paid VIP, so a blanket "free" on the flow itself would misdescribe VIP.
-// "Free admission" stays wherever it specifically describes general
-// admission, which is confirmed in docs/event-data.md.
+// "Get your tickets" rather than "Get free tickets" for the shared CTA
+// label, since it is used for every event and event-specific admission
+// terms (paid or free) belong in docs/event-data.md, not baked into a
+// site-wide string. "Free admission" / "Free General Admission" is used
+// explicitly wherever a page describes a specific event's admission, which
+// is confirmed in docs/event-data.md.
 
 export const TICKET_CTA = "Get your tickets";
 

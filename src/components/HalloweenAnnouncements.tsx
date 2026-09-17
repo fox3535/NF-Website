@@ -1,6 +1,7 @@
 import RevealOnScroll from "./RevealOnScroll";
 import {
   HALLOWEEN_ANNOUNCEMENTS,
+  HALLOWEEN_SPONSORS,
   type Announcement,
 } from "@/lib/halloween-content";
 
@@ -96,6 +97,9 @@ export default function HalloweenAnnouncements() {
               The cosplay competition is confirmed. Everything else on the
               Halloween bill gets posted here as it locks in, so this wall
               fills up between now and October.
+            </p>
+            <p className="mt-3 text-sm text-text-inverse-secondary">
+              Powered by {HALLOWEEN_SPONSORS.map((s) => s.name).join(", ")}.
             </p>
           </div>
 
