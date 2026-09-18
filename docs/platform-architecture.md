@@ -371,14 +371,11 @@ provider, and the retention schedule.
 ## 11. What Phase 1 deliberately does not include
 
 - No NF Club UI, form, or `/club` route. No email is sent and no provider is
-  chosen.
+  chosen. **Phase 2A adds the signup backend only** (section 13); the form
+  itself is still not built.
 - No Vendor Network UI, no login screen, no dashboard.
 - No Passport UI and no admin UI.
 - No NF Opportunities UI.
-- **No input validation library.** Nothing accepts input yet, so adding one now
-  would be guessing at a shape. Phase 2 introduces the first form; a small
-  schema validator such as Zod is the recommended choice at that point, used in
-  the server action, backed by the CHECK constraints already in the schema.
 - No storage bucket, no middleware, no session refresh, no RLS test suite, no
   seeded vendors, subscribers or stamps.
 - **No monetary values anywhere**, in seed data or in benefit copy.
@@ -388,7 +385,79 @@ provider, and the retention schedule.
 
 ---
 
-## 12. Known issues
+## 13. Phase 2A: NF Club signup backend
+
+The server-side signup path only. No `/club` page, no homepage or event-page
+form, no email sending. Built so every future signup surface calls the same
+code rather than each inventing its own writes.
+
+### 13.1 Files
+
+```
+src/lib/club/
+  consent.ts        CLUB_CONSENT_TEXT and CLUB_CONSENT_VERSION, the single
+                     source of truth for what a signup form must show
+  signup-core.ts     handleClubSignup(input, meta): all database logic, no
+                     next/headers dependency, so it is directly testable
+  signup.ts          "use server". submitClubSignup(input) reads request
+                     headers and calls signup-core; submitClubSignupForm
+                     (formData) is the eventual <form action={...}> target
+```
+
+No input-validation library was added: the field set is five values with
+simple bounds (length, an email pattern, and two DB-backed allow-lists), and
+hand-written checks in `signup-core.ts` cover it without a new dependency.
+
+### 13.2 Security boundary
+
+`signup-core.ts` is the only code that writes to `club_subscribers`,
+`consent_events`, `subscriber_interests` and `subscriber_source_touches`, and
+it uses `createSupabaseAdminClient()` exclusively. This is necessary, not
+optional: those tables have RLS enabled with **zero policies** (section 4.2),
+so no anon/publishable-key client could reach them even if one tried. No
+Supabase client of any kind runs in the browser for NF Club.
+
+### 13.3 Source-slug contract
+
+`source` must be a slug already present and `active` in `public.signup_sources`
+(section 3, seeded in `supabase/seed.sql`). It is supplied by the calling
+surface as a fixed value or a `?src=` query param the surface controls, never
+typed by the visitor. An unrecognised slug is rejected. Interests follow the
+same pattern against `public.interests`.
+
+### 13.4 Consent handling
+
+Every successful submission appends one row to `consent_events`: the exact
+wording (`CLUB_CONSENT_TEXT`) and its version (`CLUB_CONSENT_VERSION`) from
+`src/lib/club/consent.ts`, the source slug, and the request's IP and user
+agent. Bump `CLUB_CONSENT_VERSION` if the wording ever changes; editing the
+text in place would misrepresent what earlier signups agreed to (section 3.2).
+
+A repeat signup re-subscribes the address (status back to `subscribed`) on
+this fresh consent, **except** when the current status is `complained`, which
+`docs/platform-v1-plan.md` section A.9 treats as terminal. First name is set
+once and never overwritten by a later signup under a different name.
+
+### 13.5 Duplicate-email behaviour
+
+`email` is matched via the `citext` column, so case does not create a second
+row. `handleClubSignup` returns the identical `{ status: "success" }` whether
+the address is new or already existed; only malformed input (bad email
+shape, unknown interest, unknown source, missing consent) produces a
+different, non-enumerating error result.
+
+### 13.6 Anti-abuse
+
+A honeypot field and a minimum-time-to-submit check (1500ms from a
+client-supplied render timestamp), both of which respond with the same
+generic success so a bot learns nothing. **Per-IP rate limiting is
+deliberately deferred**: it needs an edge/KV component this phase does not
+add, and the two checks above are what the plan lists as sufficient before
+that. No CAPTCHA, per plan section A.4.
+
+---
+
+## 14. Known issues
 
 `npm audit` reports two high-severity advisories: `js-yaml` via `eslint` and
 `sharp` via `next`. **Both pre-date this phase and neither comes from Supabase.**
