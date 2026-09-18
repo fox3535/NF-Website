@@ -1,13 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
-import { getSupabasePublicConfig, getSupabaseServiceRoleKey } from "./env";
+import { getSupabasePublicConfig, getSupabaseSecretKey } from "./env";
 import type { Database } from "./types";
 
 /**
  * PRIVILEGED server-only Supabase client. Bypasses Row Level Security entirely.
  *
- * Three layers keep the service role key out of the browser:
+ * Three layers keep the secret key out of the browser:
  *
- *   1. The variable is named SUPABASE_SERVICE_ROLE_KEY with no NEXT_PUBLIC_
+ *   1. The variable is named SUPABASE_SECRET_KEY with no NEXT_PUBLIC_
  *      prefix, so Next.js cannot inline it into a client bundle. In the
  *      browser it is always undefined. This is the structural guarantee.
  *   2. The runtime guard below throws loudly if this module is ever evaluated
@@ -30,15 +30,15 @@ import type { Database } from "./types";
 export function createSupabaseAdminClient() {
   if (typeof window !== "undefined") {
     throw new Error(
-      "createSupabaseAdminClient was called in the browser. The service role " +
-        "key bypasses Row Level Security and must never leave the server. " +
+      "createSupabaseAdminClient was called in the browser. The secret key " +
+        "bypasses Row Level Security and must never leave the server. " +
         "Use createSupabaseBrowserClient or createSupabaseServerClient instead."
     );
   }
 
   const { url } = getSupabasePublicConfig();
 
-  return createClient<Database>(url, getSupabaseServiceRoleKey(), {
+  return createClient<Database>(url, getSupabaseSecretKey(), {
     auth: {
       // No session to persist or refresh: this client is not a signed-in user.
       autoRefreshToken: false,

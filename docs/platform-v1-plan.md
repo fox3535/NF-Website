@@ -743,11 +743,11 @@ data and read aggregate Club data.
 
 **Secrets and the client boundary:**
 
-- The service role key is server only. Never in a client component, never in a
+- The secret key is server only. Never in a client component, never in a
   `NEXT_PUBLIC_` variable, never shipped to the browser.
 - **NF Club writes happen entirely in a server action.** No Supabase client runs
-  in the browser on the marketing pages, so the anon key never touches subscriber
-  data and no policy has to be trusted to prevent public reads of the list.
+  in the browser on the marketing pages, so the publishable key never touches
+  subscriber data and no policy has to be trusted to prevent public reads of the list.
 - Vendor sessions are cookie based and server handled.
 
 **Data handling:** consent history append only, storing the wording version

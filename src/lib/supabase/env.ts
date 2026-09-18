@@ -19,7 +19,7 @@
 
 // Literal reads so Next.js can inline them for the browser bundle.
 const PUBLIC_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const PUBLIC_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const PUBLIC_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 const SETUP_HINT =
   "Copy .env.example to .env.local and fill it in from the Supabase dashboard " +
@@ -31,24 +31,25 @@ function missing(name: string): never {
 
 export interface SupabasePublicConfig {
   url: string;
-  anonKey: string;
+  publishableKey: string;
 }
 
 /**
- * Browser-safe configuration. Both values are designed to be public: the anon
- * key grants nothing on its own, because every table is protected by Row Level
- * Security and the NF Club tables have no policies at all.
+ * Browser-safe configuration. Both values are designed to be public: the
+ * publishable key grants nothing on its own, because every table is
+ * protected by Row Level Security and the NF Club tables have no policies at
+ * all.
  *
  * Throws only when called.
  */
 export function getSupabasePublicConfig(): SupabasePublicConfig {
   if (!PUBLIC_URL) missing("NEXT_PUBLIC_SUPABASE_URL");
-  if (!PUBLIC_ANON_KEY) missing("NEXT_PUBLIC_SUPABASE_ANON_KEY");
-  return { url: PUBLIC_URL, anonKey: PUBLIC_ANON_KEY };
+  if (!PUBLIC_PUBLISHABLE_KEY) missing("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY");
+  return { url: PUBLIC_URL, publishableKey: PUBLIC_PUBLISHABLE_KEY };
 }
 
 /**
- * The service role key. Bypasses Row Level Security entirely.
+ * The secret key. Bypasses Row Level Security entirely.
  *
  * Deliberately has no NEXT_PUBLIC_ prefix, which is the structural reason it
  * cannot reach a client bundle: Next.js only inlines NEXT_PUBLIC_ variables,
@@ -56,9 +57,9 @@ export function getSupabasePublicConfig(): SupabasePublicConfig {
  *
  * Throws only when called, and only ever on the server.
  */
-export function getSupabaseServiceRoleKey(): string {
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!key) missing("SUPABASE_SERVICE_ROLE_KEY");
+export function getSupabaseSecretKey(): string {
+  const key = process.env.SUPABASE_SECRET_KEY;
+  if (!key) missing("SUPABASE_SECRET_KEY");
   return key;
 }
 
@@ -69,5 +70,5 @@ export function getSupabaseServiceRoleKey(): string {
  * "is the platform wired up yet", not "is this user permitted".
  */
 export function isSupabaseConfigured(): boolean {
-  return Boolean(PUBLIC_URL && PUBLIC_ANON_KEY);
+  return Boolean(PUBLIC_URL && PUBLIC_PUBLISHABLE_KEY);
 }

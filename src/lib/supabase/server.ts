@@ -7,10 +7,10 @@ import type { Database } from "./types";
  * Server Supabase client for server components, route handlers and server
  * actions that should act AS THE SIGNED-IN USER.
  *
- * Uses the anon key, so every query runs under Row Level Security with the
- * caller's own permissions. This is the right client for almost all vendor
- * reads: if a policy is wrong, the query returns nothing rather than returning
- * someone else's data.
+ * Uses the publishable key, so every query runs under Row Level Security with
+ * the caller's own permissions. This is the right client for almost all
+ * vendor reads: if a policy is wrong, the query returns nothing rather than
+ * returning someone else's data.
  *
  * For privileged operations (awarding a stamp, changing standing, writing an
  * NF Club subscriber) use `createSupabaseAdminClient` from ./admin instead,
@@ -19,10 +19,10 @@ import type { Database } from "./types";
  * Async because Next.js `cookies()` is async.
  */
 export async function createSupabaseServerClient() {
-  const { url, anonKey } = getSupabasePublicConfig();
+  const { url, publishableKey } = getSupabasePublicConfig();
   const cookieStore = await cookies();
 
-  return createServerClient<Database>(url, anonKey, {
+  return createServerClient<Database>(url, publishableKey, {
     cookies: {
       getAll() {
         return cookieStore.getAll();

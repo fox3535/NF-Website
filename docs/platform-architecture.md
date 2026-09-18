@@ -39,7 +39,7 @@ This is a hard constraint, verified rather than assumed:
   unset. Verified: a production build with no `.env` file at all succeeds and
   all six routes are still marked `○ (Static)` prerendered.
 - **No Supabase code reaches the client bundle.** Verified after build: no
-  occurrence of `SUPABASE_SERVICE_ROLE_KEY` anywhere in `.next/static`, and no
+  occurrence of `SUPABASE_SECRET_KEY` anywhere in `.next/static`, and no
   Supabase library in any client chunk, because nothing imports it yet.
 - Every accessor in `src/lib/supabase/env.ts` is a **function**. A module-level
   throw would turn a missing variable into a build failure for pages that never
@@ -65,9 +65,9 @@ supabase/
   seed.sql                        reference data only, no monetary values
 src/lib/supabase/
   env.ts                          lazy validated env access, never throws on import
-  client.ts                       browser client, anon key, RLS enforced
-  server.ts                       server client, anon key, acts as the user
-  admin.ts                        service role, server only, bypasses RLS
+  client.ts                       browser client, publishable key, RLS enforced
+  server.ts                       server client, publishable key, acts as the user
+  admin.ts                        secret key, server only, bypasses RLS
   types.ts                        hand-written Database types
 docs/platform-architecture.md     this file
 ```
@@ -167,7 +167,7 @@ policies is reachable only by the service role.
 
 **NF Club data has no policies at all.** This is the strongest guarantee in the
 schema. It does not depend on a policy being written correctly, on the UI
-hiding anything, or on anyone remembering a rule: the anon key and every
+hiding anything, or on anyone remembering a rule: the publishable key and every
 signed-in vendor simply have no grant to use. Subscriber data cannot become
 publicly queryable. NF Club signup therefore runs entirely server side through
 the admin client, which is exactly where it belongs given the marketing pages
@@ -236,23 +236,23 @@ Three clients, three different privilege levels.
 
 | Module | Key | Runs | Respects RLS | Use for |
 | --- | --- | --- | --- | --- |
-| `client.ts` | anon | browser | yes | Client components in the Vendor Network (Phase 3) |
-| `server.ts` | anon | server | yes | Server components, route handlers and actions acting **as the signed-in user** |
-| `admin.ts` | service role | server only | **no, bypasses** | Privileged writes after an explicit authorisation check |
+| `client.ts` | publishable | browser | yes | Client components in the Vendor Network (Phase 3) |
+| `server.ts` | publishable | server | yes | Server components, route handlers and actions acting **as the signed-in user** |
+| `admin.ts` | secret | server only | **no, bypasses** | Privileged writes after an explicit authorisation check |
 
 **Prefer `server.ts`.** If a policy is wrong, a query returns nothing rather
 than returning someone else's data. Reach for `admin.ts` only where the
 operation is genuinely privileged.
 
-### 6.1 How the service role key is kept out of the browser
+### 6.1 How the secret key is kept out of the browser
 
 1. **Structural, and the one that actually guarantees it:** the variable is
-   named `SUPABASE_SERVICE_ROLE_KEY` with **no `NEXT_PUBLIC_` prefix**. Next.js
+   named `SUPABASE_SECRET_KEY` with **no `NEXT_PUBLIC_` prefix**. Next.js
    only inlines `NEXT_PUBLIC_` variables into client bundles, so in the browser
    this is always `undefined`. It cannot be bundled. **Never add that prefix.**
 2. **Runtime guard:** `createSupabaseAdminClient()` throws a descriptive error
    if evaluated in a browser, so a mistaken import fails loudly at once.
-3. **Verified:** after a production build, `SUPABASE_SERVICE_ROLE_KEY` appears
+3. **Verified:** after a production build, `SUPABASE_SECRET_KEY` appears
    nowhere in `.next/static`.
 
 **Recommended for Phase 2:** add the `server-only` package and import it at the
@@ -276,11 +276,11 @@ produces a confusing runtime failure.
 | Variable | Exposure | Where to find it |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | Browser, intended | Project Settings, then API, then Project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Browser, intended | Project Settings, then API, then anon public |
-| `SUPABASE_SERVICE_ROLE_KEY` | **Server only, secret** | Project Settings, then API, then service_role |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Browser, intended | Project Settings, then API, then publishable key |
+| `SUPABASE_SECRET_KEY` | **Server only, secret** | Project Settings, then API, then secret key |
 
-The anon key is safe to publish: it grants nothing on its own because every
-table is protected by RLS and the NF Club tables have no policies.
+The publishable key is safe to publish: it grants nothing on its own because
+every table is protected by RLS and the NF Club tables have no policies.
 
 `.env.example` is committed and holds names only. `.gitignore` ignores `.env*`
 with an explicit `!.env.example` exception so the template can be tracked while
@@ -350,7 +350,7 @@ Nothing in this repository can create these. All of it is manual, one time.
    Never commit that file.
 4. **Run the migrations**, then `seed.sql` (section 8).
 5. **Add the same three variables to Vercel** (Project Settings, then
-   Environment Variables) for Preview and Production. The service role key must
+   Environment Variables) for Preview and Production. The secret key must
    be added as a **secret**, never as a plain value, and never with a
    `NEXT_PUBLIC_` prefix.
 6. **Make yourself an admin.** After signing in once so an `auth.users` row
