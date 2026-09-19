@@ -30,6 +30,11 @@
   --color-halloween: #ff8a3d;
   --color-halloween-deep: #7a2f00;
 
+  /* Form error state. Always paired with text and an icon, never colour
+     alone. 6.54 on paper, 5.9 on danger-soft. */
+  --color-danger: #b3261e;
+  --color-danger-soft: #fdeceb;
+
   /* Interactive accent — focus rings and interactive affordance only. */
   --color-cyan: #0e93ab;
   --color-cyan-bright: #5eead4;

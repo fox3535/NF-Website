@@ -56,6 +56,11 @@ There are no API routes, no server actions and no dynamic routes.
 
 ### 1.2 Personal information collected: none
 
+> **Superseded by Phase 2B.** `/club` now collects NF Club signups (first
+> name, email, optional interests, consent history, signup source, and IP and
+> user agent on the consent record). `/privacy` was updated to describe this
+> on September 18, 2026. The snapshot below records the site before that.
+
 Verified by searching the whole of `src/`:
 
 - **No forms.** No `<form>`, no `<input>`, no `<textarea>` anywhere.

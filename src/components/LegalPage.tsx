@@ -46,7 +46,7 @@ export default function LegalPage({
             <p className="mt-4 text-text-inverse-secondary">{intro}</p>
             <p className="mt-6 text-sm text-text-inverse-secondary">
               Last updated:{" "}
-              <time dateTime="2026-09-17">{LEGAL_LAST_UPDATED}</time>
+              <time dateTime="2026-09-18">{LEGAL_LAST_UPDATED}</time>
             </p>
           </div>
         </div>

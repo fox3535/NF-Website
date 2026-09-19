@@ -44,8 +44,36 @@ export async function submitClubSignup(
 export async function submitClubSignupForm(
   formData: FormData
 ): Promise<ClubSignupResult> {
+  return submitClubSignup(readSignupForm(formData));
+}
+
+/**
+ * useActionState-shaped entry point for ClubSignupForm. Passing a Server
+ * Action directly to useActionState is what keeps the form working before
+ * hydration (docs/platform-v1-plan.md section A.4).
+ *
+ * Any unexpected throw (missing env, network failure reaching Supabase) is
+ * caught here and turned into the same generic retry message, so nothing
+ * internal ever reaches the browser or trips the route's error boundary.
+ */
+export async function clubSignupAction(
+  _previous: ClubSignupResult | null,
+  formData: FormData
+): Promise<ClubSignupResult> {
+  try {
+    return await submitClubSignup(readSignupForm(formData));
+  } catch (error) {
+    console.error(
+      "club signup: unexpected failure",
+      error instanceof Error ? error.name : "unknown"
+    );
+    return { status: "error", message: "Signup could not be completed." };
+  }
+}
+
+function readSignupForm(formData: FormData): ClubSignupInput {
   const renderedAtRaw = formData.get("renderedAt");
-  return submitClubSignup({
+  return {
     firstName: String(formData.get("firstName") ?? ""),
     email: String(formData.get("email") ?? ""),
     interests: formData.getAll("interests").map(String),
@@ -53,5 +81,5 @@ export async function submitClubSignupForm(
     source: String(formData.get("source") ?? ""),
     honeypot: String(formData.get("company") ?? ""),
     renderedAt: renderedAtRaw ? Number(renderedAtRaw) : undefined,
-  });
+  };
 }

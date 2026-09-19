@@ -372,7 +372,8 @@ provider, and the retention schedule.
 
 - No NF Club UI, form, or `/club` route. No email is sent and no provider is
   chosen. **Phase 2A adds the signup backend only** (section 13); the form
-  itself is still not built.
+  itself is still not built. **Phase 2B adds `/club` and the reusable form**
+  (section 13.7).
 - No Vendor Network UI, no login screen, no dashboard.
 - No Passport UI and no admin UI.
 - No NF Opportunities UI.
@@ -456,6 +457,45 @@ add, and the two checks above are what the plan lists as sufficient before
 that. No CAPTCHA, per plan section A.4.
 
 ---
+
+### 13.7 Phase 2B: `/club` and the reusable form
+
+```
+src/app/club/page.tsx             the canonical NF Club page, static
+src/components/ClubSignupForm.tsx the reusable form, any signup surface
+src/lib/club/options.ts           CLUB_INTERESTS and CLUB_SIGNUP_SOURCES
+```
+
+- **One form, one action.** `ClubSignupForm` posts to `clubSignupAction` in
+  `signup.ts`, a `useActionState` adapter over the same `submitClubSignup`
+  path. It adds no business logic: it catches unexpected throws and returns
+  the generic error so nothing internal reaches the browser. The component
+  only runs presence checks (name, email shape, consent) for fast feedback;
+  the server remains authoritative.
+- **Source.** `/club` submits the existing `club-page` slug. No new slug was
+  added. The embedding page passes `source` as a `ClubSignupSource` literal,
+  rendered as a hidden input; the visitor never types it, and the server
+  still rejects anything not active in `public.signup_sources`. `?src=` for
+  QR codes is not wired yet.
+- **Options are mirrored, not fetched.** `options.ts` copies the seeded
+  interests and sources so `/club` stays a static page with no database call
+  on render. Keep it in step with `seed.sql`; a drifted slug fails loudly at
+  submit rather than being accepted.
+- **Consent wording** is rendered verbatim from `CLUB_CONSENT_TEXT`, so the
+  text stored in `consent_events` is exactly what the person saw. Current
+  version is `v2`; `v1` promised "exclusive drops", an unapproved benefit, and
+  was retired. Existing `v1` rows are untouched.
+- **Navigation: not linked yet, by decision.** The desktop header already
+  wraps "What is NF?" and "Blast From the Past" onto two lines at 768px, so a
+  fourth `NAV_LINKS` item would crowd it further. Recommended when Club
+  placements ship: add "NF Club" to the mobile menu and the footer nav first,
+  and to the desktop header only once the md breakpoint has room (or the
+  header gains an `lg`-only item). No active-state treatment exists in the
+  header today, so none was added for `/club`.
+- **Submission** is dispatched from `onSubmit` once hydrated, because React's
+  automatic reset after an action-prop submit unticks checkboxes while their
+  state still reads ticked. The `action` prop stays as the pre-hydration
+  fallback.
 
 ## 14. Known issues
 

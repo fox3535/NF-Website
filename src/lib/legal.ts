@@ -14,7 +14,7 @@
  * Shown on every legal page. Bump this whenever the substance of any policy
  * changes, not on a copy-edit. One value so the three pages cannot drift.
  */
-export const LEGAL_LAST_UPDATED = "September 17, 2026";
+export const LEGAL_LAST_UPDATED = "September 18, 2026";
 
 /**
  * The registered legal entity the policies are written in, confirmed by
