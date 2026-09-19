@@ -46,3 +46,23 @@ export const CLUB_SIGNUP_SOURCES = [
 ] as const;
 
 export type ClubSignupSource = (typeof CLUB_SIGNUP_SOURCES)[number];
+
+/**
+ * Narrows an untrusted value (a `?src=` query param) to a known signup
+ * source, falling back when it is missing, malformed or not on the list.
+ * Exact match only: no trimming or case folding, so a printed QR code has
+ * to carry the slug exactly as seeded.
+ */
+export function resolveClubSignupSource(
+  raw: string | null | undefined,
+  fallback: ClubSignupSource
+): ClubSignupSource {
+  return (CLUB_SIGNUP_SOURCES as readonly string[]).includes(raw ?? "")
+    ? (raw as ClubSignupSource)
+    : fallback;
+}
+
+/** Link to /club that carries the referring surface's source slug. */
+export function clubHref(source: ClubSignupSource): string {
+  return `/club?src=${source}`;
+}

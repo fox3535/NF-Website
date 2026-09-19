@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import ClubNavLink from "./ClubNavLink";
 import MobileNav from "./MobileNav";
 import { getTicketHref, expo2026 } from "@/lib/events";
 import { NAV_LINKS, TICKET_CTA } from "@/lib/nav";
@@ -28,7 +29,7 @@ export default function SiteHeader() {
 
         <nav
           aria-label="Primary"
-          className="hidden items-center gap-7 md:flex lg:gap-9"
+          className="hidden items-center gap-9 lg:flex"
         >
           {NAV_LINKS.map((link) => (
             <Link
@@ -39,6 +40,7 @@ export default function SiteHeader() {
               {link.label}
             </Link>
           ))}
+          <ClubNavLink />
           <Link
             href={getTicketHref(expo2026)}
             className="nf-action nf-action-filled px-5 py-2.5 text-sm"

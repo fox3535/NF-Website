@@ -7,12 +7,17 @@ import {
   useId,
   useRef,
   useState,
+  useSyncExternalStore,
   startTransition,
   type FormEvent,
   type Ref,
 } from "react";
 import { CLUB_CONSENT_TEXT } from "@/lib/club/consent";
-import { CLUB_INTERESTS, type ClubSignupSource } from "@/lib/club/options";
+import {
+  CLUB_INTERESTS,
+  resolveClubSignupSource,
+  type ClubSignupSource,
+} from "@/lib/club/options";
 import { clubSignupAction, type ClubSignupResult } from "@/lib/club/signup";
 import { upcomingEvents } from "@/lib/events";
 
@@ -46,12 +51,22 @@ function serverFieldErrors(state: ClubSignupResult | null): FieldErrors {
  * every database write live in src/lib/club/signup-core.ts; this component
  * only collects input, runs presence checks for faster feedback, and renders
  * the result. `source` is fixed by the embedding page, never user editable.
+ * With `sourceFromUrl` (the /club page only), a `?src=` param naming an
+ * allow-listed slug replaces it, so a visitor who arrived from the homepage
+ * or an event page is attributed to that surface. Anything else keeps
+ * `source`.
  *
  * A real <form> bound to a Server Action through useActionState, so it
  * submits before hydration too. Inputs are controlled so a failed submit
  * never wipes what the person already typed.
  */
-export default function ClubSignupForm({ source }: { source: ClubSignupSource }) {
+export default function ClubSignupForm({
+  source,
+  sourceFromUrl = false,
+}: {
+  source: ClubSignupSource;
+  sourceFromUrl?: boolean;
+}) {
   const [state, formAction, pending] = useActionState(clubSignupAction, null);
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
@@ -81,6 +96,13 @@ export default function ClubSignupForm({ source }: { source: ClubSignupSource })
   useEffect(() => {
     if (renderedAtRef.current) renderedAtRef.current.value = String(Date.now());
   }, []);
+
+  // Read on the client only (the server snapshot is empty), so /club stays a
+  // static page and the prerendered HTML carries the fallback source.
+  const search = useSyncExternalStore(subscribeToNothing, readSearch, readNoSearch);
+  const resolvedSource = sourceFromUrl
+    ? resolveClubSignupSource(new URLSearchParams(search).get("src"), source)
+    : source;
 
   // Move focus to whatever the server just told us about.
   useEffect(() => {
@@ -170,7 +192,7 @@ export default function ClubSignupForm({ source }: { source: ClubSignupSource })
       aria-busy={pending}
       className="flex flex-col gap-5"
     >
-      <input type="hidden" name="source" value={source} />
+      <input type="hidden" name="source" value={resolvedSource} />
       <input ref={renderedAtRef} type="hidden" name="renderedAt" defaultValue="" />
 
       {/* Honeypot. Off screen, out of the tab order and hidden from assistive
@@ -327,6 +349,18 @@ export default function ClubSignupForm({ source }: { source: ClubSignupSource })
       </div>
     </form>
   );
+}
+
+// Entry points link to /club from other pages, so the query string is fixed
+// for the life of the form and there is nothing to subscribe to.
+function subscribeToNothing() {
+  return () => {};
+}
+function readSearch() {
+  return window.location.search;
+}
+function readNoSearch() {
+  return "";
 }
 
 function TextField({

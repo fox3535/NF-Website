@@ -103,7 +103,7 @@ export default function ClubPage() {
                 </span>
               </div>
               <div className="rounded-xl border-2 border-ink bg-paper p-4 sm:p-6">
-                <ClubSignupForm source="club-page" />
+                <ClubSignupForm source="club-page" sourceFromUrl />
               </div>
             </div>
 

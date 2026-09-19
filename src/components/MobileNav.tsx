@@ -16,6 +16,7 @@ export default function MobileNav() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const returnFocusRef = useRef(false);
 
   useEffect(() => {
     const main = document.querySelector("main");
@@ -34,6 +35,12 @@ export default function MobileNav() {
     } else {
       targets.forEach((el) => el.removeAttribute("inert"));
       triggerRef.current?.removeAttribute("inert");
+      // Focus can only move once the trigger is no longer inert, so it is
+      // restored here rather than in the close handlers.
+      if (returnFocusRef.current) {
+        returnFocusRef.current = false;
+        triggerRef.current?.focus();
+      }
     }
 
     return () => {
@@ -45,8 +52,8 @@ export default function MobileNav() {
     if (!open) return;
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
+        returnFocusRef.current = true;
         setOpen(false);
-        triggerRef.current?.focus();
       }
     }
     document.addEventListener("keydown", onKeyDown);
@@ -54,7 +61,7 @@ export default function MobileNav() {
   }, [open]);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         ref={triggerRef}
         type="button"
@@ -95,8 +102,8 @@ export default function MobileNav() {
               ref={closeRef}
               type="button"
               onClick={() => {
+                returnFocusRef.current = true;
                 setOpen(false);
-                triggerRef.current?.focus();
               }}
               className="flex h-11 w-11 items-center justify-center rounded-lg text-text"
             >
@@ -129,6 +136,13 @@ export default function MobileNav() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/club"
+              onClick={() => setOpen(false)}
+              className="rounded-lg py-4 text-2xl font-semibold text-text"
+            >
+              NF Club
+            </Link>
             <Link
               href={getTicketHref(expo2026)}
               onClick={() => setOpen(false)}

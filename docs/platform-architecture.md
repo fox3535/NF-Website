@@ -485,13 +485,32 @@ src/lib/club/options.ts           CLUB_INTERESTS and CLUB_SIGNUP_SOURCES
   text stored in `consent_events` is exactly what the person saw. Current
   version is `v2`; `v1` promised "exclusive drops", an unapproved benefit, and
   was retired. Existing `v1` rows are untouched.
-- **Navigation: not linked yet, by decision.** The desktop header already
-  wraps "What is NF?" and "Blast From the Past" onto two lines at 768px, so a
-  fourth `NAV_LINKS` item would crowd it further. Recommended when Club
-  placements ship: add "NF Club" to the mobile menu and the footer nav first,
-  and to the desktop header only once the md breakpoint has room (or the
-  header gains an `lg`-only item). No active-state treatment exists in the
-  header today, so none was added for `/club`.
+- **Navigation (updated in Phase 2C).** NF Club is in the footer nav, the
+  menu and the desktop header. The full-screen menu now serves everything
+  below 1024px and the inline desktop nav starts at 1024px (`lg`), because
+  four links plus the ticket button do not fit on one row at 768px. The
+  desktop "NF Club" link (`ClubNavLink.tsx`, a client component only for
+  `usePathname`) shows an underline and `aria-current="page"` on `/club`. It
+  is a plain link, not a second button: "Get your tickets" stays the only CTA.
+  Header height and stickiness still switch at `md`.
+
+### 13.8 Phase 2C: sitewide entry points
+
+`ClubTeaser` (src/components/ClubTeaser.tsx) is a presentational band placed
+after the final ticket CTA on `/`, `/events/expo-2026` and
+`/events/halloween-2026`. It links to `/club?src=<slug>` and holds no signup
+logic. Placed after the attendance close on purpose, with an ink action
+rather than the brand or gold ticket fills, so it never competes with
+tickets.
+
+Attribution uses the existing seeded slugs only (`homepage`, `expo-2026`,
+`halloween-2026`, `club-page`); no new slug was added. `/club` renders
+`ClubSignupForm` with `sourceFromUrl`, which after mount reads `?src=` and
+passes it through `resolveClubSignupSource` (src/lib/club/options.ts): an
+exact match against `CLUB_SIGNUP_SOURCES` is used, anything else falls back
+to `club-page`. The server still re-validates against
+`public.signup_sources`. The page stays static; a submit before hydration
+records `club-page`.
 - **Submission** is dispatched from `onSubmit` once hydrated, because React's
   automatic reset after an action-prop submit unticks checkboxes while their
   state still reads ticked. The `action` prop stays as the pre-hydration

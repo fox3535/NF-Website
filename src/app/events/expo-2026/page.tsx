@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ClubTeaser from "@/components/ClubTeaser";
 import ExpoAnnouncements from "@/components/ExpoAnnouncements";
 import ExpoCollectrActivation from "@/components/ExpoCollectrActivation";
 import ExpoExploreFloor from "@/components/ExpoExploreFloor";
@@ -51,6 +52,11 @@ export default function Expo2026Page() {
         <ExpoPlanYourVisit />
         <ExpoFaq />
         <ExpoFinalCta />
+        <ClubTeaser
+          source="expo-2026"
+          heading="Stay in the loop after Expo"
+          body="Join NF Club to hear about future Nostalgia Fest shows, guests and announcements."
+        />
       </main>
       <SiteFooter />
     </>

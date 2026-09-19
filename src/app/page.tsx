@@ -1,4 +1,5 @@
 import CampaignWall from "@/components/CampaignWall";
+import ClubTeaser from "@/components/ClubTeaser";
 import FinalCta from "@/components/FinalCta";
 import InsideNF from "@/components/InsideNF";
 import ReelsCarousel from "@/components/ReelsCarousel";
@@ -30,6 +31,13 @@ export default function Home() {
         <InsideNF />
         <UpcomingEvents />
         <FinalCta />
+        {/* After the attendance close, never before it: NF Club is the
+            secondary action for people not ready to pick a show yet. */}
+        <ClubTeaser
+          source="homepage"
+          heading="Hear what's coming next"
+          body="Join NF Club to hear about upcoming shows, guests, giveaways and activations, straight from Nostalgia Fest."
+        />
       </main>
       <SiteFooter />
       <StickyCta />

@@ -29,6 +29,9 @@ export default function SiteFooter() {
           <Link href="/events/expo-2026#plan-your-visit" className="inline-flex min-h-[24px] w-fit items-center hover:text-text-inverse">
             Plan your visit
           </Link>
+          <Link href="/club" className="inline-flex min-h-[24px] w-fit items-center hover:text-text-inverse">
+            NF Club
+          </Link>
         </nav>
 
         <div className="text-sm">

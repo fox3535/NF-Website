@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ClubTeaser from "@/components/ClubTeaser";
 import CosplayCompetition from "@/components/CosplayCompetition";
 import HalloweenAnnouncements from "@/components/HalloweenAnnouncements";
 import HalloweenAtmosphere from "@/components/HalloweenAtmosphere";
@@ -41,6 +42,11 @@ export default function Halloween2026Page() {
         <HalloweenPlanYourVisit />
         <HalloweenFaq />
         <HalloweenFinalCta />
+        <ClubTeaser
+          source="halloween-2026"
+          heading="Stay in the loop after Halloween"
+          body="Join NF Club to hear about future Nostalgia Fest shows, guests, giveaways and announcements."
+        />
       </main>
       <SiteFooter />
     </>
