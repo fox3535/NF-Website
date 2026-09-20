@@ -23,6 +23,14 @@ export async function createSupabaseServerClient() {
   const cookieStore = await cookies();
 
   return createServerClient<Database>(url, publishableKey, {
+    // Every response this client receives is scoped to one signed-in user, so
+    // none of it may ever be stored in a shared cache and handed to the next
+    // visitor. Next.js already defaults fetch to no-store; saying so here
+    // means a future default change cannot quietly turn a vendor's dashboard
+    // into a cached page.
+    global: {
+      fetch: (input, init) => fetch(input, { ...init, cache: "no-store" }),
+    },
     cookies: {
       getAll() {
         return cookieStore.getAll();

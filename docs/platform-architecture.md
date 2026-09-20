@@ -160,8 +160,11 @@ policies is reachable only by the service role.
 | `events`, `milestones`, `interests` | none | read | full |
 | `passport_stamps` | none | read **own, non-voided only** | read all |
 | `passport_challenges` | none | read own | full |
-| `opportunities` | none | read **`status = 'active'` only** | full |
+| `opportunities` | none | read **`status = 'active'`, approved vendors only** | full |
 | `opportunity_submissions` | none | read own | full |
+
+"Own" means `public.current_vendor_profile_id()` since migration 0006 (section
+15.3), which is bound **and** verified. Before that it meant bound alone.
 
 ### 4.2 The three decisions that matter
 
@@ -198,10 +201,9 @@ before it writes.
 
 ### 4.4 Testing RLS
 
-Not yet written, because there is no project to run it against. Before Phase 3
-ships, "vendor A cannot read vendor B's stamps" must exist as an **explicit
-test**, not an assumption. This is the single most important test in the
-system.
+Done in Phase 3A. "Vendor A cannot read vendor B's stamps" is now an executed
+test rather than an assumption, along with 42 others. See section 15.6 for what
+is covered and how the suite is run.
 
 ---
 
@@ -227,6 +229,10 @@ production use**. Magic links will not work reliably for real vendors until
 This is a **transactional** email provider (sign-in links), which is a separate
 decision from the **marketing** email provider deliberately not chosen in
 `docs/platform-v1-plan.md`. Choosing one does not commit NF to the other.
+
+**Still outstanding after Phase 3A.** The built-in sender was sufficient to
+build and test the flow and no provider was selected, per the phase's scope.
+It is not sufficient for real vendors: see section 15.5.
 
 ---
 
@@ -278,6 +284,7 @@ produces a confusing runtime failure.
 | `NEXT_PUBLIC_SUPABASE_URL` | Browser, intended | Project Settings, then API, then Project URL |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Browser, intended | Project Settings, then API, then publishable key |
 | `SUPABASE_SECRET_KEY` | **Server only, secret** | Project Settings, then API, then secret key |
+| `NF_SITE_URL` | Server only, not secret | The origin magic links return to. Optional: see section 15.5 |
 
 The publishable key is safe to publish: it grants nothing on its own because
 every table is protected by RLS and the NF Club tables have no policies.
@@ -319,9 +326,10 @@ project to generate from. Replace it as soon as one exists:
 npx supabase gen types typescript --project-id <id> > src/lib/supabase/types.ts
 ```
 
-It is shaped like Supabase's generated output specifically so this is a
-drop-in replacement. Until then, **the SQL is the source of truth** and the
-types are a copy that can drift.
+**Done in Phase 3A.** `src/lib/supabase/types.ts` is now the generated file,
+regenerated after migration 0006. The hand-written version matched it exactly,
+so the only diff was the new column and function. Regenerate with the command
+above after every migration rather than editing the file.
 
 ---
 
@@ -357,10 +365,14 @@ Nothing in this repository can create these. All of it is manual, one time.
    exists, run in the SQL editor:
    `insert into public.admin_users (auth_user_id, role) values ('<your-auth-uid>', 'owner');`
    There is intentionally no self-service path for this.
-7. **Configure custom SMTP** before Phase 3 (section 5.1). The built-in sender
-   is rate limited and not for production.
-8. **Create the vendor logo storage bucket** when Phase 3 needs it. Not created
-   in Phase 1 because nothing uploads yet; it needs per-vendor path policies.
+7. **Configure custom SMTP** before real vendors sign in (sections 5.1 and
+   15.5). The built-in sender is rate limited and not for production. It was
+   enough to build and test Phase 3A.
+8. **Create the vendor logo storage bucket** when profile editing is built.
+   Still not created: nothing uploads yet, and it needs per-vendor path
+   policies.
+9. **Add the magic-link redirect URLs** (section 15.5). Nothing signs in until
+   this is done.
 
 Still open from `docs/platform-v1-plan.md` and unrelated to this setup: the
 public mailing address (blocks commercial email under CASL), the marketing email
@@ -522,3 +534,281 @@ records `club-page`.
 `sharp` via `next`. **Both pre-date this phase and neither comes from Supabase.**
 They were not fixed here because `npm audit fix` would bump toolchain packages
 outside this task's scope. Worth addressing deliberately, separately.
+
+---
+
+## 15. Phase 3A: Vendor Network authentication
+
+Identity and authorisation only. The dashboard is a shell that proves the
+chain works; the Passport timeline, tier progress, opportunities and profile
+editing are later phases.
+
+### 15.1 Files
+
+```
+supabase/migrations/
+  0006_vendor_auth.sql        signin_email, current_vendor_profile_id(),
+                              vendor policies repointed at it
+  0007_actor_release.sql      append-only guard tolerates the FK releasing
+                              the actor reference, so an auth user can
+                              actually be deleted
+src/lib/vendors/
+  session.ts                  getVendorAccess(): resolve, bind, read
+  auth.ts                     "use server". Sign-in link request, sign out
+src/app/vendors/
+  page.tsx                    public landing, static
+  login/page.tsx              dynamic, reads ?state=
+  login/VendorLoginForm.tsx   client, useActionState over the server action
+  auth/callback/route.ts      the only place a session is created
+  dashboard/page.tsx          force-dynamic, authenticated shell
+src/proxy.ts                  session refresh, Vendor Network routes only
+```
+
+No dependency was added. `@supabase/ssr` was already present and is the
+current supported App Router approach; nothing here uses the deprecated
+`auth-helpers` packages.
+
+### 15.2 The sign-in flow
+
+1. The vendor enters an email at `/vendors/login`.
+2. `requestVendorSignInLink` (a Server Action) checks the address against
+   `vendor_profiles.signin_email` on a **verified** profile, using the admin
+   client because `signin_email` has no grant to any signed-in role.
+3. If and only if that matches, `signInWithOtp` sends a magic link with
+   `emailRedirectTo` pointing at `/vendors/auth/callback`.
+4. **The response is identical either way**, so the form cannot be used to
+   find out who vends at NF. See 15.4.
+5. The callback validates the token, establishes the cookie session and
+   redirects to `/vendors/dashboard`. It honours no `next` parameter: the
+   destination is fixed, so a crafted link cannot bounce a freshly
+   authenticated vendor somewhere else.
+6. `/vendors/dashboard` calls `getVendorAccess()`, which resolves the session
+   to an approved vendor or renders the neutral no-access state.
+
+There are no passwords anywhere in this flow, and **no public vendor
+registration**. Because step 2 gates step 3, a stranger cannot even cause a
+Supabase auth user to be created. That was verified: after submitting an
+unknown address through the live form, no `auth.users` row existed for it.
+
+The callback accepts both `?code=` (PKCE, the `@supabase/ssr` default, which
+requires the link to be opened in the browser that asked for it) and
+`?token_hash=&type=` (works across devices, available if the email template is
+switched to `{{ .TokenHash }}`). The login copy tells vendors to open the link
+on the same device, which is true for the default template.
+
+### 15.3 Binding an auth user to a vendor profile
+
+`vendor_profiles.signin_email` is the staff-controlled allow list: the one
+address that may claim a profile.
+
+**Why not `contact_email`.** It is the business contact address and is allowed
+to differ from the sign-in address (`docs/platform-v1-plan.md` section B.2),
+and 0002 grants `update (contact_email)` to `authenticated`. Reusing it would
+have let a vendor rewrite who is allowed to claim their own account.
+`signin_email` has no column grant at all, so a vendor can neither read nor
+write it.
+
+Binding happens once, on first sign-in, in `bindAuthUserToProfile`. It is the
+only privileged write in the Vendor Network, it writes an `audit_log` row, and
+the database decides it: the profile must match `signin_email`, be
+`verified`, be unclaimed, and the auth user must hold no profile already.
+
+**After binding, the email plays no part in authorisation.** Everything reads
+`auth.uid()` through `public.current_vendor_profile_id()`, which returns the
+caller's profile id only when the profile is bound to that uid **and**
+verified, and NULL otherwise. Every vendor-facing policy is written against
+that function, so `id = null` denies by default. No vendor id is ever accepted
+from a query string, a hidden field, a cookie or a client claim.
+
+One further detail worth knowing: the re-read that confirms the binding took
+effect is filtered by id on purpose. Next.js memoizes identical GET requests
+within a single render, so an unfiltered repeat is served the empty result
+from the read before the binding, and a vendor is told they have no access on
+the very request that granted it. This was a real failure observed in testing,
+not a theoretical one.
+
+### 15.4 What the login screen must never reveal
+
+Every well-formed address gets: *"If this email is eligible for NF Vendor
+Network access, a sign in link is on its way."* Only the shape of the text
+typed can change the answer, which is a property of the input rather than of
+anything NF holds.
+
+That covers whether an address belongs to a vendor, whether an account exists,
+whether a profile is pending or was rejected, the internal standing, and
+whether the person is staff. A delivery failure (rate limit, SMTP problem) is
+logged and still produces the same screen, because a difference there would be
+the enumeration oracle everything else avoids.
+
+**Known residual.** An eligible address costs one extra network call, so the
+response is measurably slower. Closing that needs a constant-time path and was
+not built here. Noted rather than hidden.
+
+The no-access state on the dashboard follows the same rule: it never says why,
+never shows a standing label and never shows a reason, only a route to a human
+(`docs/platform-v1-plan.md` section H).
+
+### 15.5 Supabase dashboard configuration (manual)
+
+None of this can be done from the repository.
+
+**Authentication, then URL Configuration.** Add every origin that will receive
+a magic link to **Redirect URLs**:
+
+| Environment | Value | Status |
+| --- | --- | --- |
+| Local development | `http://localhost:3000/vendors/auth/callback` | Needed now |
+| Vercel previews | `https://*-<your-team>.vercel.app/vendors/auth/callback` | Needed when the Vendor Network is deployed to a preview |
+| Vercel production | the current production origin, plus `/vendors/auth/callback` | Needed at deploy |
+| `nostalgiafest.ca` | `https://nostalgiafest.ca/vendors/auth/callback` | **Not yet.** The domain is not connected to Vercel, so add this only once it is. |
+
+**Site URL** should be the production origin once one exists. Until then
+leaving it at `http://localhost:3000` is fine.
+
+The application never derives this origin from the request's `Host` header,
+which an attacker controls. It reads `NF_SITE_URL` (server only, see
+`.env.example`), falling back to `VERCEL_URL` on previews and
+`http://localhost:3000` locally. Supabase's allow list is the second line of
+defence and both are needed.
+
+**Email delivery.** Supabase's built-in sender was used for this phase and is
+enough for bounded development testing. It is rate limited and explicitly not
+for production, so **custom SMTP must be configured before real vendors sign
+in** (section 5.1). No transactional provider was selected here, and that
+decision stays separate from the marketing provider.
+
+**Admin users.** Unchanged and still manual (section 10, step 6). Admin
+authorisation lives in `admin_users` and is read by `is_admin()`. It is
+entirely separate from vendor authorisation: `current_vendor_profile_id()`
+never consults it, `is_admin()` never consults vendor tables, and the admin
+policies were not touched by 0006.
+
+**Adding a vendor.** Also deliberately manual, and the only way in:
+
+```sql
+update public.vendor_profiles
+   set signin_email = 'them@example.com',
+       verification = 'verified'
+ where id = '<vendor-profile-id>';
+```
+
+### 15.6 Live authorisation tests
+
+Run against the real linked project with disposable auth users and vendor
+fixtures. **43 of 43 passed.** Covered:
+
+- an unknown address gets the same login response as a known one, and creates
+  no auth user
+- an approved vendor authenticates, binds, and reads exactly one profile
+- binding is case insensitive, cannot claim an unverified profile, cannot take
+  over a claimed one, and cannot be reassigned by the vendor
+- an authenticated user with no approved relationship reads no vendor profile,
+  stamp, summary, opportunity, submission or challenge
+- vendor A cannot read or write vendor B's profile, stamps, summary or
+  categories
+- a vendor cannot award a stamp to itself or to anyone else
+- a vendor cannot void or delete a stamp
+- a vendor cannot create or modify a milestone
+- a vendor cannot select `standing`, `verification`, `signin_email` or `*` on
+  its own row, and cannot write `standing` or `verification`
+- a vendor cannot read `vendor_status_history`, `admin_users` or `audit_log`,
+  and cannot insert itself into `admin_users`
+- no NF Club table is reachable from a vendor session
+- the publishable key on its own reaches none of it
+- signing out removes access; `/vendors/dashboard` then redirects to login
+
+**A note on reading the results.** PostgREST answers a write that RLS filtered
+to zero rows with `204`, not `403`: the statement ran and changed nothing.
+Both are refusals, so every write test also re-reads the row with the service
+role and asserts the data is untouched. That re-read is the real assertion.
+
+Fixtures were removed afterwards and **zero Phase 3A test rows remain**:
+`vendor_profiles`, `vendor_status_history`, `audit_log`, `passport_stamps`,
+`vendor_categories` and every NF Club table are empty, `auth.users` holds no
+accounts, and `events` holds only the two seeded real shows.
+
+Most of that went through ordinary deletes. Two profiles could not, because
+`vendor_status_history` rejects `DELETE` and also refuses the `ON DELETE
+CASCADE` from `vendor_profiles`, and neither could four `audit_log` rows.
+That was the one case genuinely needing the guards off, so it was done as a
+single throwaway migration pushed with `supabase db push`, then marked
+reverted with `supabase migration repair --status reverted 0008` and deleted.
+Migration history is back to 0001 to 0007, local and remote in sync.
+
+That migration refused to run unless every row in all three tables was test
+data, disabled only the two `*_no_delete` triggers, deleted only tagged rows,
+re-enabled them, and asserted `tgenabled = 'O'` on both before committing, so
+a failure anywhere would have rolled the guards back on. Confirmed afterwards
+from a fresh `supabase db dump`: all six append-only triggers present, none
+disabled, with only the two UPDATE triggers pointing at
+`allow_only_actor_release` and everything else still on `reject_mutation`.
+
+### 15.7 Deleting an auth user (migration 0007)
+
+`audit_log.actor_auth_user_id` and `vendor_status_history.changed_by` both
+reference `auth.users` with `ON DELETE SET NULL`, and both tables carry a
+`BEFORE UPDATE` trigger that refused every update. Deleting an auth user made
+Postgres perform the SET NULL, the trigger refused it, and the delete failed
+with `audit_log is append only: UPDATE is not permitted on this table`.
+
+**Any auth user who had ever written a history row was therefore
+undeletable**: a departing staff member, a vendor exercising a deletion
+request under PIPEDA, or a disposable test identity.
+
+0007 replaces the UPDATE trigger function on those two tables only, with
+`public.allow_only_actor_release(<actor column>)`. It permits exactly one
+shape of update: the actor column going from a real uuid to NULL with every
+other column byte-identical. Everything else still raises.
+
+| Still refused | Now permitted |
+| --- | --- |
+| Any UPDATE to any other column | The FK releasing the actor to NULL |
+| Nulling the actor *while* changing another column | |
+| Any DELETE on either table | |
+| Any UPDATE or DELETE on `consent_events` | |
+
+No foreign key was dropped, no row was deleted, no RLS policy or grant
+changed, and neither `*_no_delete` trigger was touched. Neither table has an
+UPDATE policy for any signed-in role, so `anon` and `authenticated` still
+cannot reach these rows at all; this trigger is the layer behind that.
+
+Verified live, 14 of 14, using the **service role** so the trigger itself was
+under test rather than the policy in front of it: ordinary UPDATE and DELETE
+still rejected on both tables, the combined "null the actor and edit
+something" attempt rejected, the auth user deleted successfully, both history
+rows still present, only the actor column NULL, every other column unchanged,
+and the guard still shut afterwards.
+
+**A second, separate conflict exists and was deliberately left alone.**
+`vendor_status_history.vendor_profile_id` references `vendor_profiles` with
+`ON DELETE CASCADE`, while `vendor_status_history_no_delete` rejects every
+delete, so **a vendor profile that has any standing history cannot be
+deleted**. That is a DELETE, not the auth-user lifecycle 0007 fixes, and
+whether a vendor profile may ever be hard deleted is a product decision
+(`docs/platform-v1-plan.md` section J says to prefer void and correction over
+deletion). Left as-is rather than widened. Practical consequence: create
+standing history only for profiles meant to be permanent.
+
+### 15.8 Security hygiene, re-verified
+
+- `SUPABASE_SECRET_KEY` has no `NEXT_PUBLIC_` prefix and appears nowhere in
+  `.next/static`, neither the name nor the value.
+- No Supabase client runs in the browser on any Vendor Network page. The login
+  form talks to a Server Action; the dashboard is a Server Component.
+- `src/lib/supabase/server.ts` now pins `cache: "no-store"` on its fetch.
+  Next.js already defaults to that, but a future default change must not be
+  able to turn one vendor's dashboard into a cached page served to another.
+- `.env.local` and `supabase/.temp/` remain gitignored. No test password, auth
+  token or session token is written to the repository, and no email address or
+  token is logged: failures log an error name only.
+- `/vendors/login` and `/vendors/dashboard` are `noindex`.
+- The public marketing routes are untouched and still build as `○ (Static)`.
+  `src/proxy.ts` matches Vendor Network routes only.
+
+### 15.9 What Phase 3A deliberately does not include
+
+No Passport timeline, tier progress UI, benefit lists, opportunities UI,
+profile editing, logo upload, storage bucket, table booking, invoices,
+payments, applications, messaging, Airtable sync, admin UI, attendee accounts
+or transactional email provider. No Passport milestone rule changed, and
+nothing in NF Club was touched.

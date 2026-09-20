@@ -632,6 +632,7 @@ export type Database = {
           id: string
           instagram_handle: string | null
           logo_path: string | null
+          signin_email: string | null
           standing: Database["public"]["Enums"]["vendor_standing"]
           updated_at: string
           verification: Database["public"]["Enums"]["vendor_verification"]
@@ -646,6 +647,7 @@ export type Database = {
           id?: string
           instagram_handle?: string | null
           logo_path?: string | null
+          signin_email?: string | null
           standing?: Database["public"]["Enums"]["vendor_standing"]
           updated_at?: string
           verification?: Database["public"]["Enums"]["vendor_verification"]
@@ -660,6 +662,7 @@ export type Database = {
           id?: string
           instagram_handle?: string | null
           logo_path?: string | null
+          signin_email?: string | null
           standing?: Database["public"]["Enums"]["vendor_standing"]
           updated_at?: string
           verification?: Database["public"]["Enums"]["vendor_verification"]
@@ -734,6 +737,7 @@ export type Database = {
       }
     }
     Functions: {
+      current_vendor_profile_id: { Args: never; Returns: string }
       is_admin: { Args: never; Returns: boolean }
       vendor_active_stamp_count: {
         Args: { p_vendor_profile_id: string }
