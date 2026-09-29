@@ -15,6 +15,7 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/events/expo-2026" },
   title: "Nostalgia Fest Expo 2026: October 9 to 11, Free Admission",
   description:
     "Nostalgia Fest Expo, October 9 to 11, 2026 at Square One Event Hall, Mississauga. 200+ vendor tables of trading cards, toys, comics, art and collectibles. Free General Admission for everyone.",

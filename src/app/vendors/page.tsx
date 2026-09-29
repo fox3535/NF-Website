@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   description:
     "The NF Vendor Network is where vendors who have worked with Nostalgia Fest can see their NF history in one place. Access is arranged by Nostalgia Fest.",
   alternates: { canonical: "/vendors" },
+  // Not promoted until the Vendor Network is finished.
+  robots: { index: false, follow: false },
 };
 
 /**

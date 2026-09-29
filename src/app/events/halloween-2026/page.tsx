@@ -17,6 +17,13 @@ export const metadata: Metadata = {
   title: "Nostalgia Fest Halloween: October 31 and November 1, 2026",
   description:
     "Nostalgia Fest Halloween at Square One Event Hall, October 31 and November 1, 2026. Free General Admission and a major cosplay competition.",
+  alternates: { canonical: "/events/halloween-2026" },
+  openGraph: {
+    title: "Nostalgia Fest Halloween 2026",
+    description:
+      "October 31 and November 1, 2026 · Square One Event Hall, Mississauga. Free General Admission.",
+    images: ["/images/campaigns/halloween-landing-banner.png"],
+  },
 };
 
 /**

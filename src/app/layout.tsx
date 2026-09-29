@@ -17,6 +17,14 @@ export const metadata: Metadata = {
   title: "Nostalgia Fest: Trading Cards, Collectibles & Pop Culture",
   description:
     "Nostalgia Fest is a GTA event for trading cards, collectibles, toys, artists and pop culture. Free general admission at the next Nostalgia Fest Expo, October 9 to 11, 2026.",
+  openGraph: {
+    siteName: "Nostalgia Fest",
+    type: "website",
+    locale: "en_CA",
+    title: "Nostalgia Fest: Trading Cards, Collectibles & Pop Culture",
+    description:
+      "A GTA event for trading cards, collectibles, toys, artists and pop culture. Free general admission at the next Nostalgia Fest Expo, October 9 to 11, 2026.",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

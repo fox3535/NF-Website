@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import CampaignWall from "@/components/CampaignWall";
 import ClubTeaser from "@/components/ClubTeaser";
 import FinalCta from "@/components/FinalCta";
@@ -8,6 +9,8 @@ import SiteHeader from "@/components/SiteHeader";
 import StickyCta from "@/components/StickyCta";
 import UpcomingEvents from "@/components/UpcomingEvents";
 import WhatIsNF from "@/components/WhatIsNF";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 /**
  * Homepage: discovery → excitement → choosing an event.
