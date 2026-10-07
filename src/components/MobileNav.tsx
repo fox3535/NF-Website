@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { getTicketHref, expo2026 } from "@/lib/events";
+import { expo2026 } from "@/lib/events";
+import TicketButton from "./TicketButton";
 import { NAV_LINKS, TICKET_CTA } from "@/lib/nav";
 
 /**
@@ -143,13 +144,14 @@ export default function MobileNav() {
             >
               NF Club
             </Link>
-            <Link
-              href={getTicketHref(expo2026)}
+            <TicketButton
+              eventSlug={expo2026.slug}
+              fallback={expo2026.href}
               onClick={() => setOpen(false)}
               className="mt-4 inline-flex items-center justify-center rounded-lg bg-brand px-6 py-4 text-lg font-semibold text-text-inverse"
             >
               {TICKET_CTA}
-            </Link>
+            </TicketButton>
           </nav>
         </div>
       )}

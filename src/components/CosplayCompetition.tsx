@@ -6,40 +6,17 @@ import RevealOnScroll from "./RevealOnScroll";
  * The page's signature section, and the biggest experiential moment after
  * the hero.
  *
- * SIGNATURE MOMENT 2 — the stage. Two spotlight cones breathe out of phase
+ * SIGNATURE MOMENT 2: the stage. Two spotlight cones breathe out of phase
  * above a competition poster built as a physical pass: slab label across
  * the top, the title, a stamped CONFIRMED mark that lands on scroll, then a
- * perforated stub carrying the competition board.
+ * perforated stub carrying the entry rules.
  *
- * The competition itself is confirmed (docs/event-data.md); categories,
- * prizes, judging and schedule are not, so each renders from
- * HALLOWEEN_COSPLAY and falls back to an honest "announced soon" state
- * rather than inventing specifics. Those four used to be four identical
- * placeholder cards, which read as an unfinished layout; as ruled rows on
- * one board with a running pending count, the same absence reads as a
- * schedule being kept. Adding any of them later is a data change in
- * src/lib/halloween-content.ts, not a layout change.
+ * Only rules confirmed in docs/event-data.md render, from HALLOWEEN_COSPLAY
+ * in src/lib/halloween-content.ts. Adding a rule, or the registration link
+ * once it exists, is a data change there, not a layout change.
  */
-const DETAIL_SLOTS: { key: keyof typeof HALLOWEEN_COSPLAY; label: string }[] =
-  [
-    { key: "categories", label: "Categories" },
-    { key: "prizes", label: "Prizes" },
-    { key: "judging", label: "Judging" },
-    { key: "schedule", label: "Schedule" },
-  ];
-
-function resolve(key: keyof typeof HALLOWEEN_COSPLAY): string | null {
-  const value = HALLOWEEN_COSPLAY[key];
-  if (Array.isArray(value)) return value.join(", ");
-  return typeof value === "string" ? value : null;
-}
-
 export default function CosplayCompetition() {
-  const rows = DETAIL_SLOTS.map((slot) => ({
-    ...slot,
-    value: resolve(slot.key),
-  }));
-  const pending = rows.filter((row) => row.value === null).length;
+  const { summary, rules, registrationUrl } = HALLOWEEN_COSPLAY;
 
   return (
     <section
@@ -88,9 +65,7 @@ export default function CosplayCompetition() {
             <p
               className="mx-auto mt-6 max-w-md text-text-inverse-secondary md:text-lg"
             >
-              A major cosplay competition is part of Nostalgia Fest Halloween.
-              Full details are being finalized and will be announced closer to
-              the show.
+              {summary}
             </p>
           </div>
 
@@ -102,42 +77,36 @@ export default function CosplayCompetition() {
           />
 
           <div className="rounded-lg bg-ink-soft px-5 py-6 md:px-8 md:py-7">
-            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-              <p className="nf-eyebrow text-[10px] text-text-inverse-secondary">
-                Competition board
-              </p>
-              <p className="tabular-nums nf-eyebrow text-[10px] text-text-inverse-secondary">
-                {pending} of {rows.length} still to be announced
-              </p>
-            </div>
+            <p className="nf-eyebrow text-[10px] text-text-inverse-secondary">
+              How to compete
+            </p>
 
             <dl className="mt-4 divide-y divide-border-inverse border-t border-b border-border-inverse">
-              {rows.map((row) => (
+              {rules.map((rule) => (
                 <div
-                  key={row.key}
-                  className="flex items-baseline gap-4 py-3.5"
+                  key={rule.label}
+                  className="flex flex-col gap-1 py-3.5 sm:flex-row sm:items-baseline sm:gap-4"
                 >
                   <dt className="nf-display shrink-0 text-xl text-text-inverse md:text-2xl">
-                    {row.label}
+                    {rule.label}
                   </dt>
-                  <dd className="flex flex-1 items-baseline gap-4">
-                    <span
-                      aria-hidden="true"
-                      className="nf-perforation flex-1 text-text-inverse"
-                    />
-                    {row.value ? (
-                      <span className="shrink-0 text-right text-sm text-text-inverse">
-                        {row.value}
-                      </span>
-                    ) : (
-                      <span className="nf-eyebrow shrink-0 text-[10px] whitespace-nowrap text-halloween">
-                        Announced soon
-                      </span>
-                    )}
+                  <dd className="text-sm text-text-inverse sm:flex-1 sm:text-right">
+                    {rule.value}
                   </dd>
                 </div>
               ))}
             </dl>
+            {registrationUrl ? (
+              <a
+                href={registrationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nf-action nf-action-halloween mt-6 w-full px-6 py-3 text-sm"
+              >
+                Register for the Cosplay Competition
+                <span aria-hidden="true">→</span>
+              </a>
+            ) : null}
           </div>
         </article>
 

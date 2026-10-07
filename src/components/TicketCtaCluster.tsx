@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { setCommitment, useCommitment } from "@/lib/commitment";
 import { buildIcs, downloadIcs, EXPO_2026_ICS } from "@/lib/ics";
-import { getTicketHref, expo2026 } from "@/lib/events";
+import { expo2026 } from "@/lib/events";
+import TicketButton from "./TicketButton";
 
 const MAPS_URL =
   "https://www.google.com/maps/search/?api=1&query=" +
@@ -85,8 +85,9 @@ export default function TicketCtaCluster({
 
   if (!going) {
     return (
-      <Link
-        href={getTicketHref(expo2026)}
+      <TicketButton
+        eventSlug={expo2026.slug}
+        fallback={expo2026.href}
         onClick={handleTicketClick}
         className={
           fullWidth ? filled[surface] + " w-full" : filled[surface]
@@ -94,7 +95,7 @@ export default function TicketCtaCluster({
       >
         {expo2026.ctaLabel}
         <span aria-hidden="true">→</span>
-      </Link>
+      </TicketButton>
     );
   }
 
@@ -125,9 +126,13 @@ export default function TicketCtaCluster({
       >
         {shareStatus === "copied" ? "Link copied" : "Share with a friend"}
       </button>
-      <Link href={getTicketHref(expo2026)} className={backLinkClasses[surface]}>
+      <TicketButton
+        eventSlug={expo2026.slug}
+        fallback={expo2026.href}
+        className={backLinkClasses[surface]}
+      >
         Back to tickets
-      </Link>
+      </TicketButton>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import ShowTag from "./ShowTag";
 import TicketButton from "./TicketButton";
+import { TICKET_URLS } from "@/lib/tickets";
 import { halloween2026 } from "@/lib/events";
 
 /**
@@ -122,9 +123,10 @@ export default function HalloweenHero() {
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <TicketButton
               eventSlug="halloween-2026"
+              fallback="#plan-your-visit"
               className="nf-action nf-action-halloween px-7 py-3.5 text-base"
             >
-              Get your tickets
+              {TICKET_URLS["halloween-2026"] ? "Get your tickets" : "Plan your visit"}
               <span aria-hidden="true">→</span>
             </TicketButton>
             <a

@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import ClubNavLink from "./ClubNavLink";
 import MobileNav from "./MobileNav";
-import { getTicketHref, expo2026 } from "@/lib/events";
+import TicketButton from "./TicketButton";
+import { expo2026 } from "@/lib/events";
 import { NAV_LINKS, TICKET_CTA } from "@/lib/nav";
 
 export default function SiteHeader() {
@@ -41,13 +42,14 @@ export default function SiteHeader() {
             </Link>
           ))}
           <ClubNavLink />
-          <Link
-            href={getTicketHref(expo2026)}
+          <TicketButton
+            eventSlug={expo2026.slug}
+            fallback={expo2026.href}
             className="nf-action nf-action-filled px-5 py-2.5 text-sm"
           >
             {TICKET_CTA}
             <span aria-hidden="true">→</span>
-          </Link>
+          </TicketButton>
         </nav>
 
         <MobileNav />

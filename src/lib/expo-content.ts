@@ -16,9 +16,9 @@ export interface Announcement {
 }
 
 /**
- * Only confirmed programming goes here. Guests, sponsor activation content
- * and anything else in docs/event-data.md's "Unconfirmed" list stays out
- * until it's added there — this array is deliberately short right now.
+ * Only confirmed programming goes here. Sponsor activation content and
+ * anything else in docs/event-data.md's "Unconfirmed" list stays out until
+ * it's added there. Guests have their own section (ExpoGuests.tsx).
  */
 export const EXPO_ANNOUNCEMENTS: Announcement[] = [
   {
@@ -33,12 +33,43 @@ export const EXPO_ANNOUNCEMENTS: Announcement[] = [
     title: "Food court on site",
     description: "Grab something to eat without leaving the hall.",
   },
+];
+
+export interface GuestAppearance {
+  day: string;
+  /** Left undefined when the public time is not confirmed for publication. */
+  time?: string;
+}
+
+export interface ExpoGuest {
+  id: string;
+  name: string;
+  credit: string;
+  /** File stem in public/images/guests (png, webp, jpg or jpeg). */
+  imageStem: string;
+  appearances: GuestAppearance[];
+}
+
+/**
+ * Confirmed public guest appearance hours (docs/event-data.md).
+ */
+export const EXPO_GUESTS: ExpoGuest[] = [
   {
-    id: "guest",
-    kind: "Special guest",
-    title: "A special guest is confirmed",
-    description: "Who it is hasn't been announced yet. Check back soon.",
-    pending: true,
+    id: "carlos-bustamante",
+    name: "Carlos Bustamante",
+    credit: "Known for YTV's The Zone",
+    imageStem: "carlos-bustamante",
+    appearances: [{ day: "Saturday, October 10", time: "12 PM to 2 PM" }],
+  },
+  {
+    id: "deven-mack",
+    name: "Deven Mack",
+    credit: "Voice of Sonic in Sonic Prime",
+    imageStem: "deven-mack",
+    appearances: [
+      { day: "Friday, October 9", time: "4 PM to 8 PM" },
+      { day: "Saturday, October 10", time: "12 PM to 6 PM" },
+    ],
   },
 ];
 

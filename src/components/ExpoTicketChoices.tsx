@@ -1,6 +1,7 @@
 import RevealOnScroll from "./RevealOnScroll";
+import TicketButton from "./TicketButton";
 import TicketPass from "./TicketPass";
-import { EXPO_TICKET_TIERS, TICKET_URLS } from "@/lib/tickets";
+import { EXPO_TICKET_TIERS } from "@/lib/tickets";
 
 /**
  * A single admission pass, not a ticket-tier comparison: Expo 2026 sells no
@@ -16,18 +17,14 @@ export default function ExpoTicketChoices() {
   const general = EXPO_TICKET_TIERS.find((t) => t.id === "general");
   if (!general) return null;
 
-  const action = TICKET_URLS["expo-2026"] ? (
-    <a
-      href={TICKET_URLS["expo-2026"]}
-      target="_blank"
-      rel="noopener noreferrer"
+  const action = (
+    <TicketButton
+      eventSlug="expo-2026"
       className="nf-action nf-action-filled px-6 py-3 text-sm"
     >
       Get your tickets
       <span aria-hidden="true">→</span>
-    </a>
-  ) : (
-    <p className="nf-stamp text-brand">Ticket link coming soon</p>
+    </TicketButton>
   );
 
   return (

@@ -14,11 +14,13 @@ export default function TicketButton({
   className,
   children,
   fallback = "#tickets",
+  onClick,
 }: {
   eventSlug: string;
   className: string;
   children: ReactNode;
   fallback?: string;
+  onClick?: () => void;
 }) {
   const url = TICKET_URLS[eventSlug] ?? null;
 
@@ -28,6 +30,7 @@ export default function TicketButton({
         href={url}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={onClick}
         className={className}
       >
         {children}
@@ -36,7 +39,7 @@ export default function TicketButton({
   }
 
   return (
-    <Link href={fallback} className={className}>
+    <Link href={fallback} onClick={onClick} className={className}>
       {children}
     </Link>
   );

@@ -224,12 +224,14 @@ export default function PrivacyPage() {
       <h2>Tickets and ticket providers</h2>
       {hasAnyTicketProvider() ? (
         <p>
-          Ticket actions on our event pages send you to a third-party ticketing
-          provider. That provider is a separate company. When you register or
-          buy a ticket there, you are giving your information to them, under
-          their terms and their privacy policy, not ours. We do not control
-          their privacy practices, and you should read their policy before
-          completing a purchase.
+          Free registration for Nostalgia Fest Expo happens on Eventbrite, a
+          third-party ticketing provider. The ticket buttons on our event
+          pages open Eventbrite in a new tab. Eventbrite is a separate
+          company. When you register there, you are giving your information to
+          them, under their terms and their privacy policy, not ours. We do
+          not control their privacy practices, and you should read their
+          policy before completing a registration. Joining NF Club is separate
+          and is never required to get free admission.
         </p>
       ) : (
         <p>

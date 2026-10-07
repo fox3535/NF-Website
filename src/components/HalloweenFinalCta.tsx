@@ -1,5 +1,6 @@
 import RevealOnScroll from "./RevealOnScroll";
 import TicketButton from "./TicketButton";
+import { TICKET_URLS } from "@/lib/tickets";
 import { halloween2026 } from "@/lib/events";
 
 /**
@@ -60,9 +61,10 @@ export default function HalloweenFinalCta() {
           />
           <TicketButton
             eventSlug="halloween-2026"
+            fallback="#plan-your-visit"
             className="nf-action nf-action-halloween relative px-7 py-3.5 text-base"
           >
-            Get your tickets
+            {TICKET_URLS["halloween-2026"] ? "Get your tickets" : "Plan your visit"}
             <span aria-hidden="true">→</span>
           </TicketButton>
         </div>

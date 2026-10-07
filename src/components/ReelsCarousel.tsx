@@ -5,27 +5,23 @@ import { centreOffset, scrollTrackTo } from "@/lib/scroll";
 import { INSTAGRAM_URL } from "@/lib/social";
 
 /**
- * NF Reels — a custom vertical-video carousel, split into two rows.
+ * NF Reels: a custom vertical-video carousel of hand-picked local MP4s.
  *
- * Deliberately not an Instagram embed: these are local MP4s we control, hand
- * picked, with no automatic feed. Nothing is fetched until the section is
- * near the viewport; then the active clip in each row autoplays muted and the
- * others load metadata only, so neighbours show a real frame without
- * downloading every video. Hovering an inactive clip previews it muted
- * (pointer devices only); everything pauses when the section leaves the
- * viewport, and only one clip per row is ever playing.
+ * Deliberately not an Instagram embed, and NOT connected to Instagram: there
+ * is no automatic "latest" feed yet (see docs/architecture.md, "Instagram
+ * Reels"). Nothing is fetched until the section is near the viewport; then
+ * the active clip autoplays muted and the others load metadata only, so
+ * neighbours show a real frame without downloading every video. Hovering an
+ * inactive clip previews it muted (pointer devices only); everything pauses
+ * when the section leaves the viewport, and only one clip ever plays.
  *
- * PINNED holds the three verified clips we keep permanently featured.
- * LATEST is the browsable rail for newer posts — adding one is a data change
- * (drop the file in public/videos, add a `src` entry below) rather than a
- * component change. Until real clips exist, those slots render a branded
- * placeholder rather than an invented post, and the rail ends in a card that
- * sends visitors to Instagram instead of pretending to be one more Reel.
+ * FEATURED_REELS holds the verified clips. Adding one is a data change (drop
+ * the file in public/videos, add an entry below). The rail ends in a card that
+ * sends visitors to Instagram for everything newer.
  */
 interface Reel {
   id: string;
-  /** Present for a real clip; absent for a not-yet-populated slot. */
-  src?: string;
+  src: string;
   /** Media fragment seek — gives the browser a usable poster frame without
    *  shipping separate poster images (we have no transcoding tooling). */
   posterAt?: string;
@@ -39,7 +35,7 @@ interface Reel {
   titleAbove?: boolean;
 }
 
-const PINNED_REELS: Reel[] = [
+const FEATURED_REELS: Reel[] = [
   {
     id: "jingle",
     src: "/videos/nf-jingle.mp4",
@@ -64,17 +60,6 @@ const PINNED_REELS: Reel[] = [
   },
 ];
 
-/**
- * No verified recent clips exist yet — these six slots demonstrate the rail
- * at its intended size. To populate one: add `src`, `posterAt`, `label` and
- * `caption` here, exactly like a PINNED_REELS entry with a real clip.
- */
-const LATEST_REELS: Reel[] = Array.from({ length: 6 }, (_, i) => ({
-  id: `latest-${i + 1}`,
-  label: "LATEST REEL",
-  caption: "Content coming.",
-}));
-
 function PlayIcon({ playing, size = 18 }: { playing: boolean; size?: number }) {
   return (
     <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24">
@@ -94,29 +79,6 @@ function InstagramGlyph() {
       <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.8" />
       <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" />
     </svg>
-  );
-}
-
-/** Branded stand-in for a slot with no clip yet. */
-function PlaceholderReel({ reel }: { reel: Reel }) {
-  return (
-    <div className="nf-case nf-case-ink h-full">
-      <div className="nf-case-label text-text-inverse-secondary">
-        <span>{reel.label}</span>
-        <span className="text-pink-bright">Reel</span>
-      </div>
-      <div className="nf-halftone relative flex aspect-9/16 flex-col items-center justify-center gap-3 overflow-hidden rounded-xl bg-brand-deep text-center">
-        <span aria-hidden="true" className="text-3xl text-gold-bright">
-          ✦
-        </span>
-        <span className="nf-stamp text-pink-bright">Content coming</span>
-      </div>
-      <div className="px-1 pt-3 pb-1">
-        <p className="mt-1 text-sm text-text-inverse-secondary">
-          {reel.caption}
-        </p>
-      </div>
-    </div>
   );
 }
 
@@ -363,20 +325,6 @@ function ReelRow({
                 ? "opacity-100 md:scale-100"
                 : "opacity-65 md:scale-[0.93]");
 
-          if (!reel.src) {
-            return (
-              <li
-                key={reel.id}
-                ref={(el) => {
-                  cardRefs.current[i] = el;
-                }}
-                className={cardClasses}
-              >
-                <PlaceholderReel reel={reel} />
-              </li>
-            );
-          }
-
           return (
             <li
               key={reel.id}
@@ -557,19 +505,11 @@ export default function ReelsCarousel() {
         </h2>
 
         <ReelRow
-          reels={PINNED_REELS}
+          reels={FEATURED_REELS}
           seen={seen}
           inView={inView}
-          idPrefix="Pinned"
-          heading="Pinned reels"
-        />
-
-        <ReelRow
-          reels={LATEST_REELS}
-          seen={seen}
-          inView={inView}
-          idPrefix="Latest"
-          heading="Latest reels"
+          idPrefix="Featured"
+          heading="Featured reels"
           showArrows
           trailingCard={<InstagramCard />}
         />

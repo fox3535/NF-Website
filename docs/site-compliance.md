@@ -124,12 +124,15 @@ Specifically worth noting:
 
 ### 1.7 Ticketing
 
-`src/lib/tickets.ts` has `TICKET_URLS` with every entry `null`. **No ticketing
-provider is connected.** Ticket actions currently link to an in-page anchor, so
-no visitor data reaches any ticketing company today.
+`src/lib/tickets.ts` has `TICKET_URLS`: `expo-2026` points at the Expo
+Eventbrite registration page (free General Admission) and opens in a new tab;
+`halloween-2026` is still `null` and its buttons keep visitors on the page.
+Eventbrite is therefore a third-party provider for Expo, and the Privacy
+Policy and Refunds page name it. NF Club signup stays separate and is never
+required to get free admission.
 
-`hasAnyTicketProvider()` was added so the legal pages describe the real state
-and switch automatically when a provider is wired in.
+`hasAnyTicketProvider()` lets the legal pages describe the real state and
+switch automatically when a provider is wired in.
 
 ---
 

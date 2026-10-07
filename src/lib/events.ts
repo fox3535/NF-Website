@@ -1,3 +1,4 @@
+import { TICKET_URLS } from "./tickets";
 import { TICKET_CTA } from "./nav";
 
 // Authoritative event data for the homepage.
@@ -105,14 +106,10 @@ export const halloween2026: NFEvent = {
 export const upcomingEvents: NFEvent[] = [expo2026, halloween2026];
 
 /**
- * The ticket / RSVP destination for the featured event.
- *
- * No ticketing platform is connected yet (out of scope for V1, and explicitly
- * not to be faked). Every ticket action on the homepage points at
- * the event's own placeholder page rather than a dead link or an invented
- * external URL, per docs/homepage-concept.md section 5's "clear path toward
- * the future Expo landing page / RSVP flow."
+ * The ticket / RSVP destination for an event: its real registration URL from
+ * src/lib/tickets.ts when one is confirmed, otherwise the event's own page,
+ * never a dead link or an invented external URL.
  */
 export function getTicketHref(event: NFEvent): string {
-  return event.href;
+  return TICKET_URLS[event.slug] ?? event.href;
 }

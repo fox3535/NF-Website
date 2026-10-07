@@ -60,21 +60,43 @@ export const HALLOWEEN_ANNOUNCEMENTS: Announcement[] = [
 ];
 
 /**
- * Cosplay competition specifics. The competition itself is confirmed; the
- * fields below stay undefined until docs/event-data.md documents them, and
- * the section (CosplayCompetition.tsx) renders around whatever is present.
+ * Cosplay competition. Only the entry rules Chris has stated as confirmed
+ * live here (docs/event-data.md). Divisions, a children's category, a build
+ * book, prizes, judging, judges, an organizer name and a start time were
+ * discussed but are NOT confirmed for publication, so they are not here.
+ *
+ * `registrationUrl` stays null until Chris supplies the real form link; the
+ * section renders an entry button only when it is set.
  */
+export interface CosplayRule {
+  label: string;
+  value: string;
+}
+
 export interface CosplayInfo {
   confirmed: true;
-  categories?: string[];
-  prizes?: string[];
-  judging?: string;
-  schedule?: string;
-  registration?: { open: boolean; details?: string };
+  /** One line shown under the title. */
+  summary: string;
+  rules: CosplayRule[];
+  registrationUrl: string | null;
 }
 
 export const HALLOWEEN_COSPLAY: CosplayInfo = {
   confirmed: true,
+  summary:
+    "A major cosplay competition is part of Nostalgia Fest Halloween, on Saturday, October 31.",
+  rules: [
+    { label: "When", value: "Saturday, October 31" },
+    {
+      label: "To compete",
+      value: "A costume needs to be at least 70% handmade",
+    },
+    {
+      label: "Made by someone else?",
+      value: "The maker needs to be there with you",
+    },
+  ],
+  registrationUrl: "https://forms.gle/6s96cL5XibG75uHQ9",
 };
 
 export interface FaqItem {
@@ -95,7 +117,12 @@ export const HALLOWEEN_FAQ: FaqItem[] = [
   {
     question: "Is there a cosplay competition?",
     answer:
-      "Yes, a major cosplay competition is confirmed. Categories, judging and prizes are still being finalized and will be announced closer to the show.",
+      "Yes. The cosplay competition is on Saturday, October 31. To compete, a costume needs to be at least 70% handmade, and if someone else made it, the maker needs to be there with you. Registration is through the cosplay competition form.",
+  },
+  {
+    question: "Can I compete in the cosplay competition?",
+    answer:
+      "Competitive entries need to be at least 70% handmade, and the maker needs to be present if someone else made the costume. Watching and wearing a costume without competing is always welcome.",
   },
   {
     question: "Do I need to be in costume to attend?",

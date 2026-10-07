@@ -26,11 +26,6 @@ const TONES: Record<string, { surface: string; accent: string; glow: string }> =
       accent: "text-cyan-bright",
       glow: "radial-gradient(85% 70% at 50% 112%, #5eead4 0%, transparent 68%)",
     },
-    "Special guest": {
-      surface: "bg-brand-deep",
-      accent: "text-pink-bright",
-      glow: "radial-gradient(85% 70% at 50% 112%, #ffd4f4 0%, transparent 66%)",
-    },
   };
 const DEFAULT_TONE = TONES.Giveaways;
 

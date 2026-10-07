@@ -18,8 +18,13 @@ This is the authoritative file for public Nostalgia Fest event information. Neve
 - **Vendor tables:** approximately 200+ is the current positioning
 - **Food court:** confirmed on site.
 - **Giveaways:** hourly giveaways confirmed, run throughout the show.
-- **Special guest:** a special guest is confirmed but unnamed — do not invent
-  or guess who. Publish only that a special guest announcement is coming.
+- **Special guests (confirmed public appearance hours):**
+  - Carlos Bustamante (known for YTV's The Zone): Saturday, October 10,
+    12 PM to 2 PM.
+  - Deven Mack (voice of Sonic in Sonic Prime): Friday, October 9, 4 PM to
+    8 PM, and Saturday, October 10, 12 PM to 6 PM.
+  - Guest graphics go in public/images/guests/ as carlos-bustamante and
+    deven-mack (png, webp, jpg); until supplied the cards render text only.
 - **Parking:** free parking confirmed at the venue.
 - **Sponsors / activations:** Slab Sharks, Collectr and Card Catcher are
   confirmed sponsors of Expo 2026. Collectr's activation is a "Wall of
@@ -47,10 +52,16 @@ This is the authoritative file for public Nostalgia Fest event information. Neve
   confirmed. Upper Hand has been raised internally as a possible organizer
   but this is not confirmed — do not publish "Upper Hand" or any tournament
   organizer name anywhere on the site until this is explicitly confirmed.
-- **Cosplay competition:** a major cosplay competition is confirmed as part
-  of the event. Prize amounts, judging rules, categories and schedule are
-  not yet finalized, do not publish specific claims about any of those
-  until they are added here.
+- **Cosplay competition:** confirmed, Saturday, October 31, 2026. Published
+  entry rules (stated by Chris as confirmed): a competitive costume must be at
+  least 70% handmade, and the maker must be present when someone else made
+  the costume. **Not confirmed for publication, do not show:** the Wendy
+  organizer/host credit, Novice / Journeyman / Master divisions, a children's
+  category (13 and under), the optional build book, prizes, judges, a start
+  time. Registration form: https://forms.gle/6s96cL5XibG75uHQ9 (`registrationUrl`
+  in src/lib/halloween-content.ts). The form needs a Google sign-in to view
+  (HTTP 401 when fetched), so its own rules, categories and status could not
+  be inspected and are not published.
 - **Hours:** not yet confirmed, do not publish or invent hours.
 - **VIP:** no VIP tier is confirmed for this event, do not add one.
 - **Sponsors / activations:** Slab Sharks, Collectr and Card Catcher are
@@ -59,4 +70,4 @@ This is the authoritative file for public Nostalgia Fest event information. Neve
   confirmed for this event, do not invent them.
 
 ## Unconfirmed
-Guests, attractions, programming, sponsors and other changing details require confirmation before publication. This applies to anything not explicitly listed above — e.g. the special guest's identity, specific sponsor activation content, and VIP pricing/perks remain unconfirmed even though the surrounding facts now are.
+Guests, attractions, programming, sponsors and other changing details require confirmation before publication. This applies to anything not explicitly listed above — e.g. specific sponsor activation content, and VIP pricing/perks remain unconfirmed even though the surrounding facts now are.

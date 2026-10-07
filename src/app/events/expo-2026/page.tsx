@@ -5,6 +5,7 @@ import ExpoCollectrActivation from "@/components/ExpoCollectrActivation";
 import ExpoExploreFloor from "@/components/ExpoExploreFloor";
 import ExpoFaq from "@/components/ExpoFaq";
 import ExpoFinalCta from "@/components/ExpoFinalCta";
+import ExpoGuests from "@/components/ExpoGuests";
 import ExpoHero from "@/components/ExpoHero";
 import ExpoPlanYourVisit from "@/components/ExpoPlanYourVisit";
 import ExpoSponsors from "@/components/ExpoSponsors";
@@ -18,11 +19,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "/events/expo-2026" },
   title: "Nostalgia Fest Expo 2026: October 9 to 11, Free Admission",
   description:
-    "Nostalgia Fest Expo, October 9 to 11, 2026 at Square One Event Hall, Mississauga. 200+ vendor tables of trading cards, toys, comics, art and collectibles. Free General Admission for everyone.",
+    "Nostalgia Fest Expo, October 9 to 11, 2026 at Square One Event Hall, Mississauga. 200+ vendor tables of trading cards, toys, comics, art and collectibles. Free General Admission for everyone. Special guests Carlos Bustamante and Deven Mack.",
   openGraph: {
     title: "Nostalgia Fest Expo 2026",
     description:
-      "October 9 to 11, 2026 · Square One Event Hall, Mississauga. Free General Admission.",
+      "October 9 to 11, 2026 · Square One Event Hall, Mississauga. Free General Admission. Guests Carlos Bustamante and Deven Mack.",
     images: ["/images/campaigns/expo-2026-banner.png"],
   },
 };
@@ -46,6 +47,7 @@ export default function Expo2026Page() {
         <ExpoHero />
         <ExpoTicketChoices />
         <ExpoWhyAttend />
+        <ExpoGuests />
         <ExpoAnnouncements />
         <ExpoExploreFloor />
         <ExpoSponsors />

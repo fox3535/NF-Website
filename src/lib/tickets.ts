@@ -6,11 +6,13 @@
 // URL anywhere else, so wiring a real link later (or switching providers)
 // is a one-line change here, never a hunt through page components.
 //
-// No real ticketing URL is documented for any event yet, so every entry
-// stays null. Consumers (see TicketButton.tsx) fall back to an honest
-// in-page destination instead of inventing one.
+// Expo 2026 registration is free General Admission through Eventbrite.
+// Halloween has no confirmed registration URL yet, so its entry stays null
+// and consumers (see TicketButton.tsx) fall back to an honest in-page
+// destination instead of inventing one.
 export const TICKET_URLS: Record<string, string | null> = {
-  "expo-2026": null,
+  "expo-2026":
+    "https://www.eventbrite.com/e/nostalgia-fest-expo-at-square-one-free-3-day-gta-tcg-collectibles-show-tickets-1998432851455?aff=oddtdtcreator",
   "halloween-2026": null,
 };
 

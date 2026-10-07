@@ -53,62 +53,63 @@ export default function ExpoCollectrActivation() {
           </div>
         </div>
 
-        {/* The two banners Collectr supplied, shown as-is rather than
-            cropped into a shared frame — they're two different aspect
-            ratios doing two different jobs (the prize call-out and the
-            full activation poster). */}
-        <div className="mt-10 grid gap-4 md:grid-cols-[1.3fr_1fr]">
-          <div className="nf-case overflow-hidden">
-            <div className="relative aspect-square md:aspect-4/5">
+        {/* The two Collectr graphics are both 1080x1350 files, but they do
+            different jobs. The poster is dense and shown whole at its true
+            4:5 ratio. The $1,000 note sits in a lot of empty cream, so it is
+            framed tighter (the wording and both paper balls stay in view) and
+            the daily prize schedule stacks under it. That fills the second
+            column to the poster's height instead of leaving a tall empty
+            card beside it. */}
+        <div className="mt-10 grid gap-4 md:grid-cols-[1.3fr_1fr] md:items-stretch">
+          <div className="nf-case order-3 self-start overflow-hidden md:order-none">
+            <div className="relative aspect-4/5">
               <Image
                 src={banners[1].src}
                 alt={banners[1].alt}
                 fill
-                sizes="(min-width: 768px) 55vw, 100vw"
+                sizes="(min-width: 1152px) 640px, (min-width: 768px) 55vw, 100vw"
                 className="object-cover"
                 loading="lazy"
               />
             </div>
           </div>
-          <div className="nf-case overflow-hidden">
-            <div className="relative aspect-video md:aspect-4/5">
-              <Image
-                src={banners[0].src}
-                alt={banners[0].alt}
-                fill
-                sizes="(min-width: 768px) 40vw, 100vw"
-                className="object-cover"
-                loading="lazy"
-              />
+
+          <div className="order-1 flex flex-col gap-4 md:order-none">
+            <div className="nf-case overflow-hidden">
+              <div className="relative aspect-[1080/1130]">
+                <Image
+                  src={banners[0].src}
+                  alt={banners[0].alt}
+                  fill
+                  sizes="(min-width: 1152px) 490px, (min-width: 768px) 40vw, 100vw"
+                  className="object-cover object-[50%_42%]"
+                  loading="lazy"
+                />
+              </div>
             </div>
+
+            <dl className="order-2 grid flex-1 gap-3 md:order-none">
+              {prizes.map((prize) => (
+                <div
+                  key={prize.day}
+                  className="flex flex-col justify-center rounded-xl border border-border bg-white px-5 py-3"
+                >
+                  <dt className="nf-eyebrow text-[10px] text-text-secondary">
+                    {prize.day}
+                  </dt>
+                  <dd className="mt-1 flex items-baseline gap-2">
+                    <span className="nf-numeral tabular-nums text-3xl text-brand">
+                      {prize.amount}
+                    </span>
+                    <span className="text-sm text-text-secondary">
+                      @ {prize.time}
+                    </span>
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
-
-        <div
-          aria-hidden="true"
-          className="nf-perforation mt-10 text-brand/50"
-        />
-
-        <dl className="mt-8 grid gap-4 sm:grid-cols-3">
-          {prizes.map((prize) => (
-            <div
-              key={prize.day}
-              className="rounded-xl border border-border bg-white px-5 py-4"
-            >
-              <dt className="nf-eyebrow text-[10px] text-text-secondary">
-                {prize.day}
-              </dt>
-              <dd className="mt-2 flex items-baseline gap-2">
-                <span className="nf-numeral tabular-nums text-3xl text-brand">
-                  {prize.amount}
-                </span>
-                <span className="text-sm text-text-secondary">
-                  @ {prize.time}
-                </span>
-              </dd>
-            </div>
-          ))}
-        </dl>
       </RevealOnScroll>
     </section>
   );

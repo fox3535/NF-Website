@@ -40,8 +40,10 @@ export default function RefundsPage() {
       <h2>Where things stand today</h2>
       {hasAnyTicketProvider() ? (
         <p>
-          Tickets for our events are sold and registered through a third-party
-          ticketing provider. The sections below explain how each type of
+          Free registration for Nostalgia Fest Expo 2026 is handled through
+          Eventbrite, a third-party ticketing provider. No paid tickets are
+          on sale for any announced event, and every announced event is Free
+          General Admission only. The sections below explain how each type of
           admission works.
         </p>
       ) : (

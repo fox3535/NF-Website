@@ -27,7 +27,13 @@ export default function HalloweenTicketCta() {
       <span aria-hidden="true">→</span>
     </TicketButton>
   ) : (
-    <p className="nf-stamp text-halloween">Ticket link coming soon</p>
+    <a
+      href="#plan-your-visit"
+      className="nf-action nf-action-halloween px-6 py-3 text-sm"
+    >
+      Plan your visit
+      <span aria-hidden="true">→</span>
+    </a>
   );
 
   return (

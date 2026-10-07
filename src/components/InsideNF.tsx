@@ -21,13 +21,11 @@ const DESKTOP_CARDS_PER_VIEW = 3;
  * dump with a disclaimer attached.
  *
  * A browsable rail rather than a fixed grid, so the section is not capped at
- * three photos — adding a fourth real shot later is a data change. Two
- * honest placeholder slots demonstrate that headroom now without faking
- * event photography: no stock image stands in for a real one.
+ * three photos — adding a fourth real shot later is a data change. No
+ * placeholder cards: no stock image stands in for a real one.
  */
 interface Shot {
   id: string;
-  /** Absent for a not-yet-populated slot — renders a branded panel instead. */
   photo?: { src: string; alt: string };
   caption: string;
   stamp: string;
@@ -60,16 +58,6 @@ const SHOTS: Shot[] = [
     },
     caption: "Everyone finds their table",
     stamp: "April 2026",
-  },
-  {
-    id: "more-1",
-    caption: "More from the archive",
-    stamp: "Coming soon",
-  },
-  {
-    id: "more-2",
-    caption: "More from the archive",
-    stamp: "Coming soon",
   },
 ];
 
